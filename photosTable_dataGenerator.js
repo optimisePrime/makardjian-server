@@ -1,7 +1,8 @@
 var faker = require('faker');
 var db = require('./db/db.js')
 
-var photoGenerator = () => {
+//generate a random number of photos of the same category 
+var photoGenerator = (product_id) => {
 	var photoCategories = ['animals', 'cats', 'city', 'food', 'fashion', 
 	'nature', 'sports', 'transport'];
 
@@ -11,26 +12,20 @@ var photoGenerator = () => {
 
 
 	var numberOfPhotos = Math.floor(Math.random() * 6) + 3;
+	var randomURL;
 
 	for (var i =0; i < numberOfPhotos; i++) {
-		var randomURL = fakerData();
+		randomURL = fakerData();
 		if (i === 0) {
-			db.savePhotoRecord(randomURL, i, 1)
+			db.savePhotoRecord(randomURL, product_id, 1)
 		} else {
-			db.savePhotoRecord(randomURL, i, 0)
+			db.savePhotoRecord(randomURL, product_id, 0)
 		}
 	}
 }
 
-
-for (var i = 0; i < 100; i++) {
-
-
-
-
-
-
-
-
+//populate the photos table with a random number of photos for each product
+for (var j = 1; j < 101; j++) {
+	photoGenerator(j);
 }
 

@@ -24,7 +24,7 @@ var saveProductRecord = (arrayRecord) => {
 }
 
 var savePhotoRecord = (url, product_id, mainPhotoBool) => {
-	var query = `INSERT INTO photos (url, product_id, main_photo) VALUES ('${url}', ${id}, ${mainPhotoBool});`
+	var query = `INSERT INTO photos (url, product_id, main_photo) VALUES ('${url}', ${product_id}, ${mainPhotoBool});`
 	connection.query(query, (err, results) => {
 		if (err) {
 			throw (err);

@@ -18,6 +18,8 @@ var discountGenerator = (stringPrice) => {
 	return stringPrice;
 }
 
+
+//generate a stringified object of a random number of loremIpsum paragraphs
 var descriptionGenerator = () => {
 	var randomNum = Math.floor(Math.random() * 8) + 1;
 	var descriptionObj ={};
@@ -29,9 +31,9 @@ var descriptionGenerator = () => {
 }
 
 
+//populate the products table with dynamic faker data
 for (var i =0; i < 100; i++) {
 
-	//faker data
 	var productTitle = faker.commerce.productName();
 	var vendorName = faker.company.companyName();
 	var reviewAverage = Number((Math.random() * (5 - 1) + 1).toFixed(1));
@@ -49,8 +51,9 @@ for (var i =0; i < 100; i++) {
 	var record = [productTitle, vendorName, reviewAverage, reviewCount, 
 	answeredQuestions, listPrice, discount, price, prime, description]
 
-	// console.log(record)
-
 	db.saveProductRecord(record)
 
 }
+
+
+

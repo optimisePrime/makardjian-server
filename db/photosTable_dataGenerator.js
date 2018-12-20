@@ -1,5 +1,5 @@
 var faker = require('faker');
-var db = require('./db/db.js')
+var db = require('./db.js')
 
 //generate a random number of photos of the same category 
 var photoGenerator = (product_id) => {

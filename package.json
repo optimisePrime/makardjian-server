@@ -7,9 +7,14 @@
   "engines": {
     "node": ">=6.13.0"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
+    "axios": "^0.18.0",
+    "faker": "^4.1.0",
+    "mysql": "^2.16.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"

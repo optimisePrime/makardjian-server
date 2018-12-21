@@ -24,7 +24,8 @@ const saveProductRecord = (arrayRecord) => {
 };
 
 const savePhotoRecord = (url, productId, mainPhotoBool) => {
-  const query = `INSERT INTO photos (url, product_id, main_photo) VALUES ('${url}', ${productId}, ${mainPhotoBool});`;
+  const query = `INSERT INTO photos (url, product_id, main_photo) 
+  VALUES ('${url}', ${productId}, ${mainPhotoBool});`;
   connection.query(query, (err) => {
     if (err) {
       throw (err);
@@ -34,8 +35,21 @@ const savePhotoRecord = (url, productId, mainPhotoBool) => {
   });
 };
 
+const getPhotos = (req, res) => {
+  const productId = req.params.productId;
+  const query = `SELECT * FROM PHOTOS WHERE product_id = ${productId};`;
+  connection.query(query, (err, photos) => {
+    if (err) {
+      res.statusCode(500).send();
+    } else {
+      res.send(photos);
+    }
+  });
+};
+
 
 module.exports = {
   saveProductRecord,
   savePhotoRecord,
+  getPhotos,
 };

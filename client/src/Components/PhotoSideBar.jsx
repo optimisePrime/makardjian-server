@@ -1,14 +1,18 @@
 import React from 'react';
+import PhotoThumbnail from './PhotoThumbnail.jsx'
 
 const PhotoSideBar = (props) => {
+  console.log(props.photoSideBar, 'from the photosidebar component');
+  return (
+      <ul id='mk-photo-sidebar'>
+        {
+         props.photoSideBar.map(photo =>
+            <PhotoThumbnail thumbnail={photo} />
+        )
+        }
+      </ul>
+  )
 
-    const photosArray = props.productPhotos.map(photo => (
-        <PhotoThumbnail thumbnail={photo} />
-    ));
-
-    return (
-        <div id="photo-side-bar-mk">{photosArray}</div>
-    )
 }
 
 export default PhotoSideBar;

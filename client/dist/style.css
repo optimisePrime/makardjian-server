@@ -1,0 +1,22 @@
+#mk-photo-sidebar {
+    float: left
+}
+
+.mk-photo-thumbnail {
+    list-style: none;
+    padding: 5px;
+}
+
+#mk-main-photo {
+    
+}
+
+#mk-temp-nav-bar {
+    background: #232f3e;
+    height: 100px;
+}
+
+#mk-nav-ad {
+    font-size: 48px;
+    text-align: center;
+}

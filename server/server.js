@@ -1,15 +1,14 @@
-var express = require('express');
-var path = require('path')
-/////////////////////////////////////
-var app = express();
+const express = require('express');
+const path = require('path');
+const db = require('./../db/db.js');
+//  ///////////////////////////////////
+const app = express();
 
 
-
-app.use(express.static(path.join(__dirname, './../client/dist/')))
-
+app.use(express.static(path.join(__dirname, './../client/dist/')));
 
 
-var PORT = 3004;
-app.listen(PORT)
+const PORT = 3004;
+app.listen(PORT);
 
-console.log('server is up and running')
+app.get('/photos/:productId', db.getPhotos);

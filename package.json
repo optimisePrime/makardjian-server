@@ -9,7 +9,10 @@
   },
   "scripts": {
     "react-dev": "webpack -d --watch",
-    "start": "nodemon server/server.js"
+    "start": "nodemon server/server.js",
+    "schema": "schema.sql",
+    "seed-products": "node db/productsTable_dataGenerator.js",
+    "seed-photos": "node db/photosTable_dataGenerator.js"
   },
   "dependencies": {
     "axios": "^0.18.0",

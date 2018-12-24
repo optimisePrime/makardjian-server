@@ -42,6 +42,7 @@ const getPhotos = (req, res) => {
     if (err) {
       res.statusCode(500).send();
     } else {
+      console.log(photos)
       res.send(photos);
     }
   });

@@ -11,17 +11,19 @@ class App extends React.Component {
     super(props);
     this.state = {
       photoSideBar: [],
-      mainPhoto: {}
+      mainPhoto: {},
+      currentProduct: {},
     };
-    this.getPhotos = this.getPhotos.bind(this);
   }
 
   componentDidMount() {
-    this.getPhotos();
+    const randomId = Math.floor((Math.random() * 100) + 1)
+    this.getPhotos(randomId);
+    this.getProduct(randomId);
   }
   
-  getPhotos() {
-      axios.get('/photos/4')
+  getPhotos(id) {
+      axios.get(`/photos/${id}`) //figure out how to pass in the correct id dynamically
       .then((photos) => {
         this.setState({
           photoSideBar: photos.data
@@ -39,6 +41,16 @@ class App extends React.Component {
       })
   }
 
+  getProduct(id) {
+    axios.get(`/products/${id}`)
+    .then(data => {
+      console.log(data.data)
+      this.setState({
+        currentProduct: data.data[0]
+      });
+    });
+  }
+
   render() {
     return (
       <div data-test="component-app" id="product-overview">
@@ -46,9 +58,7 @@ class App extends React.Component {
         <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
         <PhotoSideBar photoSideBar={this.state.photoSideBar}/>
         <MainPhoto mainPhoto={this.state.mainPhoto}/>
-        {/* <ProductHeader />
-        <Price />
-        <Description /> */}
+        <ProductHeader product={this.state.currentProduct} />
       </div>
     );
   }

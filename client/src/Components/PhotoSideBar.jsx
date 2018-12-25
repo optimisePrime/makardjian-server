@@ -1,8 +1,7 @@
 import React from 'react';
-import PhotoThumbnail from './PhotoThumbnail.jsx'
+import PhotoThumbnail from './PhotoThumbnail.jsx';
 
 const PhotoSideBar = (props) => {
-  console.log(props.photoSideBar, 'from the photosidebar component');
   return (
       <ul id='mk-photo-sidebar'>
         {

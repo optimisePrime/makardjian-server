@@ -1,14 +1,16 @@
 #mk-photo-sidebar {
-    float: left
+    float: left;
+    padding-top: 10%;
+    padding-left: 2px;
+    padding-right: 2px;
 }
 
 .mk-photo-thumbnail {
     list-style: none;
-    padding: 5px;
 }
 
 #mk-main-photo {
-    
+    padding-left: 5%;
 }
 
 #mk-temp-nav-bar {
@@ -19,4 +21,8 @@
 #mk-nav-ad {
     font-size: 48px;
     text-align: center;
+}
+
+#mk-product-header {
+    float: right;
 }

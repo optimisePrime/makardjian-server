@@ -41,7 +41,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div id="product-overview">
+      <div data-test="component-app" id="product-overview">
         <div id="mk-temp-nav-bar"></div>
         <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
         <PhotoSideBar photoSideBar={this.state.photoSideBar}/>

@@ -13,7 +13,7 @@
     "schema": "schema.sql",
     "seed-products": "node db/productsTable_dataGenerator.js",
     "seed-photos": "node db/photosTable_dataGenerator.js",
-    "test": "jest --config ./client/src/tests/jest.config.json"
+    "test": "jest --watch --config ./client/src/tests/jest.config.json"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -36,6 +36,7 @@
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.10.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
@@ -44,6 +45,7 @@
     "eslint-plugin-react": "^7.11.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
+    "jest-enzyme": "^7.0.1",
     "nodemon": "^1.18.9",
     "webpack": "^4.28.1",
     "webpack-cli": "^3.1.2"

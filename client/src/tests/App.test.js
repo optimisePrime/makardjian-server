@@ -1,9 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './../Components/App';
+import Enzyme, { shallow } from 'enzyme';
+import EnzymeAdapter from 'enzyme-adapter-react-16';
+import App from './../Components/App.jsx';
 
-test('renders without error', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<App />, div);
-    ReactDOM.unmountComponentAtNode(div);
-})
+Enzyme.configure({ adapter: new EnzymeAdapter() })
+
+test('renders the App component without error', () => {
+    const wrapper = shallow(<App />);
+    const AppComponent = wrapper.find("[data-test='component-app']")
+    expect(AppComponent.length).toBe(1);
+});

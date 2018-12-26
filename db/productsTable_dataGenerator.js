@@ -31,12 +31,19 @@ const descriptionGenerator = () => {
   return JSON.stringify(descriptionObj);
 };
 
+//  generate a random average review score between 1 star and five stars
+const reviewAverageGenerator = () => {
+  const possibleScores = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+  const randomScore = Math.floor(Math.random() * 9);
+  return possibleScores[randomScore];
+}
+
 
 //  populate the products table with dynamic faker data
 for (let i = 0; i < 100; i++) {
-  const productTitle = faker.commerce.productName();
+  const productTitle = `${faker.commerce.productName()}, ${faker.lorem.sentence()}`.slice(0, -1);
   const vendorName = faker.company.companyName();
-  const reviewAverage = Number((Math.random() * (5 - 1) + 1).toFixed(1));
+  const reviewAverage = reviewAverageGenerator();
   const reviewCount = Math.round((Math.random() * 3000));
   const answeredQuestions = Math.round((Math.random() * 49) + 1);
   const listPrice = faker.commerce.price(15.00, 5000, 2, '$');

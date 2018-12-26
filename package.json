@@ -10,7 +10,7 @@
   "scripts": {
     "react-dev": "webpack -d --watch",
     "start": "nodemon server/server.js",
-    "schema": "schema.sql",
+    "schema": "mysql -u root <schema.sql -p",
     "seed-products": "node db/productsTable_dataGenerator.js",
     "seed-photos": "node db/photosTable_dataGenerator.js",
     "test": "jest --watch --config ./client/src/tests/jest.config.json"

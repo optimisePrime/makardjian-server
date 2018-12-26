@@ -1,9 +1,7 @@
 import React from 'react';
 import PhotoSideBar from './PhotoSideBar.jsx';
 import MainPhoto from './MainPhoto.jsx';
-import ProductHeader from './ProductHeader.jsx';
-import Price from './Price.jsx';
-import Description from './Description.jsx';
+import ProductColumn from './ProductColumn.jsx'
 import axios from 'axios';
 
 class App extends React.Component {
@@ -58,7 +56,7 @@ class App extends React.Component {
         <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
         <PhotoSideBar photoSideBar={this.state.photoSideBar}/>
         <MainPhoto mainPhoto={this.state.mainPhoto}/>
-        <ProductHeader product={this.state.currentProduct} />
+        <ProductColumn product={this.state.currentProduct} />
       </div>
     );
   }

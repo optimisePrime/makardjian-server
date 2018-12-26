@@ -1,11 +1,16 @@
 import React from 'react';
 
 const Description = (props) => {
-    const descriptionArray = JSON.parse(props.product.description)
-    console.log(descriptionArray);
-    return (
-        <div></div>
-    )
+// console.log(props.description)
+  return (
+    <ul>
+      {
+        props.description.map(bullet => {
+         return (<li>{bullet}</li>)
+        })
+      }
+    </ul>
+  )
 };
 
 export default Description;

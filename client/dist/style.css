@@ -17,6 +17,7 @@ body {
 
 #mk-main-photo {
     padding-left: 5%;
+    display: inline-block
 }
 
 #mk-temp-nav-bar {

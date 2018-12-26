@@ -12,7 +12,7 @@ const discountGenerator = (stringPrice) => {
 
   if (randomNum <= 7) {
     discount = potentialDiscounts[randomIndex];
-    price *= discount;
+    price -= (price * discount);
     discount = ((discount * 100).toString() + '%');
     return ('$' + price.toFixed(2).toString());
   }
@@ -23,12 +23,12 @@ const discountGenerator = (stringPrice) => {
 //  generate a stringified object of a random number of loremIpsum paragraphs
 const descriptionGenerator = () => {
   const randomNum = Math.floor(Math.random() * 8) + 1;
-  const descriptionObj = {};
+  const descriptionArray = [];
 
   for (let i = 0; i < randomNum; i++) {
-    descriptionObj[i] = faker.lorem.paragraph();
+    descriptionArray.push(faker.lorem.paragraph());
   }
-  return JSON.stringify(descriptionObj);
+  return JSON.stringify(descriptionArray);
 };
 
 //  generate a random average review score between 1 star and five stars

@@ -11,6 +11,7 @@ class App extends React.Component {
       photoSideBar: [],
       mainPhoto: {},
       currentProduct: {},
+      currentDescription: [],
     };
   }
 
@@ -43,10 +44,10 @@ class App extends React.Component {
     axios.get(`/products/${id}`)
     .then(data => {
       const parsed = JSON.parse(data.data[0].description);
-      console.log(data.data[0].description)
-      // console.log(parsed);
+      console.log(parsed);
       this.setState({
-        currentProduct: data.data[0]
+        currentProduct: data.data[0],
+        currentDescription: parsed,
       });
     });
   }
@@ -58,7 +59,7 @@ class App extends React.Component {
         <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
         <PhotoSideBar photoSideBar={this.state.photoSideBar}/>
         <MainPhoto mainPhoto={this.state.mainPhoto}/>
-        <ProductColumn product={this.state.currentProduct} />
+        <ProductColumn product={this.state.currentProduct} description={this.state.currentDescription} />
       </div>
     );
   }

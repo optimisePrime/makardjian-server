@@ -41,6 +41,7 @@ const reviewAverageGenerator = () => {
 
 //  populate the products table with dynamic faker data
 for (let i = 0; i < 100; i++) {
+  discount = null;
   const productTitle = `${faker.commerce.productName()}, ${faker.lorem.sentence()}`.slice(0, -1);
   const vendorName = faker.company.companyName();
   const reviewAverage = reviewAverageGenerator();

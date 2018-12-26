@@ -1,6 +1,5 @@
 import React from 'react';
-import PhotoSideBar from './PhotoSideBar.jsx';
-import MainPhoto from './MainPhoto.jsx';
+import PhotoColumn from './PhotoColumn.jsx';
 import ProductColumn from './ProductColumn.jsx'
 import axios from 'axios';
 
@@ -54,11 +53,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div data-test="component-app" id="product-overview">
+      <div data-test="component-app" id="mk-product-overview">
         <div id="mk-temp-nav-bar"></div>
         <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
-        <PhotoSideBar photoSideBar={this.state.photoSideBar}/>
-        <MainPhoto mainPhoto={this.state.mainPhoto}/>
+        <PhotoColumn photoSideBar={this.state.photoSideBar}
+          mainPhoto={this.state.mainPhoto}/>
         <ProductColumn product={this.state.currentProduct} description={this.state.currentDescription} />
       </div>
     );

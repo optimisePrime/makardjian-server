@@ -3,7 +3,7 @@ import PhotoThumbnail from './PhotoThumbnail.jsx';
 
 const PhotoSideBar = (props) => {
   return (
-      <ul id='mk-photo-sidebar'>
+      <ul id='mk-photo-sidebar-container'>
         {
          props.photoSideBar.map(photo =>
             <PhotoThumbnail thumbnail={photo} />

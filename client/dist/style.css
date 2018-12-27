@@ -5,6 +5,20 @@ body {
     font-family: 'Lato'
 }
 
+h1 {
+    margin-bottom: 0;
+}
+
+hr {
+    background-color: transparent;
+    display: block;
+    height: 1px;
+    border-width: 0;
+    border-top: 1px solid #e7e7e7;
+    margin-top: 0;
+    margin-bottom: 14px;
+}
+
 #mk-temp-nav-bar {
     background: #232f3e;
     height: 75px;
@@ -78,6 +92,71 @@ body {
 #mk-product-title {
     font-size: 21px!important;
     line-height: 1.3!important;
-    font-weight: 400;
+    font-weight: 500;
 }
 
+#mk-by-div {
+    margin-bottom: 0;
+}
+
+#mk-by-line-anchor {
+    text-decoration: none;
+    color: #0066c0;
+    cursor: pointer;
+    padding-left: 5px;    
+}
+
+#mk-by-line-anchor:hover {
+    text-decoration: underline;
+}
+
+#mk-review-summary {
+    display: inline-block;
+}
+
+#mk-review-count-anchor {
+    text-decoration: none;
+    color: #0066c0;
+    cursor: pointer;
+}
+
+#mk-review-count-anchor:hover {
+    text-decoration: underline;
+}
+
+#mk-ask-pipe {
+    color: #666;
+    padding: 0 5px 0 5px;
+}
+
+#mk-ask-questions {
+    text-decoration: none;
+    color: #0066c0;
+    cursor: pointer;
+}
+
+#mk-ask-questions:hover {
+    text-decoration: underline;
+}
+
+.mk-price-div {
+    margin-bottom: 10px!important;
+}
+
+.mk-text-strike {
+    text-decoration: line-through!important;
+}
+
+#mk-price-block {
+    text-align: right!important
+}
+
+#mk-discount-price {
+    text-rendering: optimizeLegibility;
+    font-size: 17px!important;
+    line-height: 1.255!important 
+}
+
+.mk-red-price {
+    color: #B12704!important;   
+}

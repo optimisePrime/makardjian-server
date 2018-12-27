@@ -8,17 +8,21 @@ const ProductHeader = (props) => {
                 <span id='mk-product-title'>{props.product.product_title}</span>
               </h1>
           </div>
-          <div className='mk-product-vendor'>
-            <p>{props.product.vendor_name}</p>
+          <div id='mk-by-div'>
+            by
+            <a id='mk-by-line-anchor' href=''>{props.product.vendor_name}</a>
           </div>
-          <div className='mk-review-average'>
+          <div id='mk-review-summary'>
+            <span id="mk-review-stars"></span>
+            <span>
+              <a id='mk-review-count-anchor'>{props.product.review_count} customer reviews</a>
+            </span>
+            <span id='mk-ask-pipe'> | </span>
+            <span id='mk-ask-questions'>
+              <a>{props.product.answered_questions} answered questions</a>
+            </span>
           </div>
-          <div className='mk-review-count'>
-            {props.product.review_count} customer reviews |
-          </div>
-          <div className='mk-answered-questions'>
-            {props.product.answered_questions} answered questions
-          </div>
+          <hr/>
       </div>
   )
 };

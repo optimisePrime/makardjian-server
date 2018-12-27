@@ -3,8 +3,10 @@ import React from 'react';
 const ProductHeader = (props) => {
   return (
       <div id='mk-product-header'>
-          <div className='mk-product-title'>
-              <h1>{props.product.product_title}</h1>
+          <div>
+              <h1>
+                <span id='mk-product-title'>{props.product.product_title}</span>
+              </h1>
           </div>
           <div className='mk-product-vendor'>
             <p>{props.product.vendor_name}</p>

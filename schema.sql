@@ -10,7 +10,7 @@ USE product_overview;
 
 CREATE TABLE IF NOT EXISTS products (
 	id int NOT NULL AUTO_INCREMENT,
-	product_title varchar(200) NOT NULL,
+	product_title varchar(255) NOT NULL,
 	vendor_name varchar(50) NOT NULL,
 	review_average int, 
 	review_count int DEFAULT 0,

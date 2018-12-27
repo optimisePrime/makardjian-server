@@ -12,7 +12,7 @@ const discountGenerator = (stringPrice) => {
 
   if (randomNum <= 7) {
     discount = potentialDiscounts[randomIndex];
-    price *= discount;
+    price -= (price * discount);
     discount = ((discount * 100).toString() + '%');
     return ('$' + price.toFixed(2).toString());
   }
@@ -23,20 +23,28 @@ const discountGenerator = (stringPrice) => {
 //  generate a stringified object of a random number of loremIpsum paragraphs
 const descriptionGenerator = () => {
   const randomNum = Math.floor(Math.random() * 8) + 1;
-  const descriptionObj = {};
+  const descriptionArray = [];
 
   for (let i = 0; i < randomNum; i++) {
-    descriptionObj[i] = faker.lorem.paragraph();
+    descriptionArray.push(faker.lorem.paragraph());
   }
-  return JSON.stringify(descriptionObj);
+  return JSON.stringify(descriptionArray);
 };
+
+//  generate a random average review score between 1 star and five stars
+const reviewAverageGenerator = () => {
+  const possibleScores = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+  const randomScore = Math.floor(Math.random() * 9);
+  return possibleScores[randomScore];
+}
 
 
 //  populate the products table with dynamic faker data
 for (let i = 0; i < 100; i++) {
-  const productTitle = faker.commerce.productName();
+  discount = null;
+  const productTitle = `${faker.commerce.productName()}, ${faker.lorem.sentence()}`.slice(0, -1);
   const vendorName = faker.company.companyName();
-  const reviewAverage = Number((Math.random() * (5 - 1) + 1).toFixed(1));
+  const reviewAverage = reviewAverageGenerator();
   const reviewCount = Math.round((Math.random() * 3000));
   const answeredQuestions = Math.round((Math.random() * 49) + 1);
   const listPrice = faker.commerce.price(15.00, 5000, 2, '$');

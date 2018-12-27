@@ -12,3 +12,5 @@ const PORT = 3004;
 app.listen(PORT);
 
 app.get('/photos/:productId', db.getPhotos);
+
+app.get('/products/:productId', db.getProduct);

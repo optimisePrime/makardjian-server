@@ -42,8 +42,19 @@ const getPhotos = (req, res) => {
     if (err) {
       res.statusCode(500).send();
     } else {
-      console.log(photos)
       res.send(photos);
+    }
+  });
+};
+
+const getProduct = (req, res) => {
+  const id = req.params.productId;
+  const query = `SELECT * FROM products WHERE id = ${id};`;
+  connection.query(query, (err, data) => {
+    if (err) {
+      res.statusCode(500).send();
+    } else {
+      res.send(data);
     }
   });
 };
@@ -53,4 +64,5 @@ module.exports = {
   saveProductRecord,
   savePhotoRecord,
   getPhotos,
+  getProduct,
 };

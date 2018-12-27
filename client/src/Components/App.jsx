@@ -1,9 +1,6 @@
 import React from 'react';
-import PhotoSideBar from './PhotoSideBar.jsx';
-import MainPhoto from './MainPhoto.jsx';
-import ProductHeader from './ProductHeader.jsx';
-import Price from './Price.jsx';
-import Description from './Description.jsx';
+import PhotoColumn from './PhotoColumn.jsx';
+import ProductColumn from './ProductColumn.jsx'
 import axios from 'axios';
 
 class App extends React.Component {
@@ -11,17 +8,20 @@ class App extends React.Component {
     super(props);
     this.state = {
       photoSideBar: [],
-      mainPhoto: {}
+      mainPhoto: {},
+      currentProduct: {},
+      currentDescription: [],
     };
-    this.getPhotos = this.getPhotos.bind(this);
   }
 
   componentDidMount() {
-    this.getPhotos();
+    const randomId = Math.floor((Math.random() * 100) + 1)
+    this.getPhotos(randomId);
+    this.getProduct(randomId);
   }
   
-  getPhotos() {
-      axios.get('/photos/4')
+  getPhotos(id) {
+      axios.get(`/photos/${id}`) //figure out how to pass in the correct id dynamically
       .then((photos) => {
         this.setState({
           photoSideBar: photos.data
@@ -39,16 +39,26 @@ class App extends React.Component {
       })
   }
 
+  getProduct(id) {
+    axios.get(`/products/${id}`)
+    .then(data => {
+      const parsed = JSON.parse(data.data[0].description);
+      console.log(parsed);
+      this.setState({
+        currentProduct: data.data[0],
+        currentDescription: parsed,
+      });
+    });
+  }
+
   render() {
     return (
-      <div id="product-overview">
+      <div data-test="component-app" id="mk-product-overview">
         <div id="mk-temp-nav-bar"></div>
         <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
-        <PhotoSideBar photoSideBar={this.state.photoSideBar}/>
-        <MainPhoto mainPhoto={this.state.mainPhoto}/>
-        {/* <ProductHeader />
-        <Price />
-        <Description /> */}
+        <PhotoColumn photoSideBar={this.state.photoSideBar}
+          mainPhoto={this.state.mainPhoto}/>
+        <ProductColumn product={this.state.currentProduct} description={this.state.currentDescription} />
       </div>
     );
   }

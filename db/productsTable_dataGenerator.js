@@ -12,7 +12,8 @@ const discountGenerator = (stringPrice) => {
 
   if (randomNum <= 7) {
     discount = potentialDiscounts[randomIndex];
-    price -= (price * discount);
+    const dollarsOff = price * discount;
+    price -= dollarsOff;
     discount = ((discount * 100).toString() + '%');
     return ('$' + price.toFixed(2).toString());
   }

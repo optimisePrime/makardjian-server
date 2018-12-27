@@ -3,9 +3,9 @@ import React from 'react';
   const DiscountProduct = (props) => {
     const numListPrice = Number(props.product.list_price.slice(1));
     const numPrice = Number(props.product.price.slice(1));
-    console.log(numListPrice - numPrice);
-    const savings = numListPrice - numPrice;
-    savings = savings.toFixed(2);
+    const savingsNum = numListPrice - numPrice;
+    const savingsCur = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(savingsNum)
+    console.log(savingsCur)
     return (
       <div className='mk-price-div'>
         <table>
@@ -24,16 +24,16 @@ import React from 'react';
               <td id='mk-price-block'>
                 Price:
               </td>
-              <td id='mk-discount-price'>
+              <td id='mk-discount-price' className='mk-red-price'>
                 {props.product.price}
               </td>
             </tr>
             <tr>
               <td>
-                You Save: {savings}
-              </td>
-              <td>
-                {props.product.discount}
+                You Save:
+              </td >
+              <td id='mk-savings-cur' className='mk-red-price'>
+              {savingsCur} ({props.product.discount})
               </td>
             </tr>
           </tbody>

@@ -1,26 +1,43 @@
 import React from 'react';
 
 const NoDiscountProduct = (props) => {
-  return (
-    <div>
+  if (props.product.prime === 1) {
+    return (
+      <div>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                    Price:
+              </td>
+              <td className='mk-red-font mk-product-price'>
+                <span>{props.product.price}</span>
+                <span className='mk-prime-icon'>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )
+  } else {
+    return (
+      <div>
       <table>
         <tbody>
           <tr>
             <td>
-              <span>
                   Price:
-              </span>
             </td>
-            <td>
-              <span>
-                  {props.product.price}
-              </span>
+            <td className='mk-red-font mk-product-price'>
+              <span>{props.product.price}</span>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  )
+    )
+  }
 }
 
 export default NoDiscountProduct;

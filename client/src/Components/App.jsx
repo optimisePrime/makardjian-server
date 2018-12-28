@@ -15,9 +15,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const randomId = Math.floor((Math.random() * 100) + 1)
-    this.getPhotos(randomId);
-    this.getProduct(randomId);
+    // const randomId = Math.floor((Math.random() * 100) + 1)
+    this.getPhotos(4);
+    this.getProduct(4);
   }
   
   getPhotos(id) {
@@ -43,7 +43,6 @@ class App extends React.Component {
     axios.get(`/products/${id}`)
     .then(data => {
       const parsed = JSON.parse(data.data[0].description);
-      console.log(parsed);
       this.setState({
         currentProduct: data.data[0],
         currentDescription: parsed,

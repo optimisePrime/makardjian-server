@@ -3,15 +3,14 @@ import PhotoThumbnail from './PhotoThumbnail.jsx';
 
 const PhotoSideBar = (props) => {
   return (
-      <ul id='mk-photo-sidebar-container'>
-        {
-         props.photoSideBar.map(photo =>
-            <PhotoThumbnail thumbnail={photo} />
+    <ul id='mk-photo-sidebar-container'>
+      {
+        props.photoSideBar.map(photo =>
+          <PhotoThumbnail thumbnail={photo} changeMainPhoto={props.changeMainPhoto}/>
         )
-        }
-      </ul>
+      }
+    </ul>
   )
-
 }
 
 export default PhotoSideBar;

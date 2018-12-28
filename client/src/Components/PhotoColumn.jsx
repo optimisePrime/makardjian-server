@@ -5,7 +5,7 @@ import PhotoSideBar from './PhotoSideBar.jsx';
 const PhotoColumn = (props) => {
   return (
     <div id='mk-photo-column'>      
-      <PhotoSideBar photoSideBar={props.photoSideBar}/>
+      <PhotoSideBar photoSideBar={props.photoSideBar} changeMainPhoto={props.changeMainPhoto}/>
       <MainPhoto mainPhoto={props.mainPhoto}/>
     </div>
   )

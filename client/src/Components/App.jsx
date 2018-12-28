@@ -15,9 +15,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // const randomId = Math.floor((Math.random() * 100) + 1)
-    this.getPhotos(7);
-    this.getProduct(7);
+    const randomId = Math.floor((Math.random() * 100) + 1);
+    this.getPhotos(randomId);
+    this.getProduct(randomId);
   }
   
   getPhotos(id) {
@@ -50,13 +50,19 @@ class App extends React.Component {
     });
   }
 
+  changeMainPhoto (photo) {
+    this.setState({
+      mainPhoto: photo
+    })
+  }
+
   render() {
     return (
       <div data-test="component-app" id="mk-product-overview">
         <div id="mk-temp-nav-bar"></div>
         <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
         <PhotoColumn photoSideBar={this.state.photoSideBar}
-          mainPhoto={this.state.mainPhoto}/>
+          mainPhoto={this.state.mainPhoto} changeMainPhoto={this.changeMainPhoto.bind(this)}/>
         <ProductColumn product={this.state.currentProduct} description={this.state.currentDescription} />
       </div>
     );

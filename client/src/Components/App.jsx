@@ -16,8 +16,8 @@ class App extends React.Component {
 
   componentDidMount() {
     // const randomId = Math.floor((Math.random() * 100) + 1)
-    this.getPhotos(4);
-    this.getProduct(4);
+    this.getPhotos(7);
+    this.getProduct(7);
   }
   
   getPhotos(id) {

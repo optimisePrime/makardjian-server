@@ -63,6 +63,17 @@ hr {
     border-color: #e77600;
     padding: 0;
     cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #a2a6ac;
+    border-radius: 2px;
+    overflow: visible;
+}
+
+.mk-photo-thumbnail:hover {
+    /* h-offset, v-offset, blur, spread, color */
+    box-shadow: 0px 0px 6px 1px #e77600;
+    border-color: #e77600;
 }
 
 #mk-main-photo-wrapper {

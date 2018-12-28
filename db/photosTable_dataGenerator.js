@@ -6,16 +6,12 @@ const photoGenerator = (productId) => {
   const photoCategories = ['animals', 'cats', 'city', 'food', 'fashion',
     'nature', 'sports', 'transport'];
 
-  const randomIndex = Math.floor(Math.random() * 7) + 1;
-  const randomCategory = photoCategories[randomIndex];
-  const fakerData = faker.image[randomCategory];
-
-
   const numberOfPhotos = Math.floor(Math.random() * 6) + 3;
-  let randomURL;
-
   for (let i = 0; i < numberOfPhotos; i++) {
-    randomURL = fakerData();
+    const randomIndex = Math.floor(Math.random() * 7) + 1;
+    const randomCategory = photoCategories[randomIndex];
+    const fakerData = faker.image[randomCategory];
+    const randomURL = fakerData();
     if (i === 0) {
       db.savePhotoRecord(randomURL, productId, 1);
     } else {

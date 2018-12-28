@@ -9,3 +9,13 @@ const PhotoThumbnail = (props) => {
 }
 
 export default PhotoThumbnail;
+
+
+/*
+Chagne to a staeful class component
+  /the sate will have a current photo property which is default set to wherever main photo = 1;
+  /if the user hovers his mouse over an image. the mainPhoto state property can be set to be the image thumbnail
+  /that should then trigger a function that is passed down as a prop bound to the App context
+    /this function will take in a photo object and set the whatever photo object that is passed in as the main photo
+      on the page.
+*/

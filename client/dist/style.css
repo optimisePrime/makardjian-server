@@ -2,7 +2,7 @@ body {
     font-size: 13px;
     line-height: 19px;
     color: #111;
-    font-family: 'Lato'
+    font-family: "Lato", Arial, sans-serif
 }
 
 h1 {
@@ -123,6 +123,53 @@ hr {
 
 #mk-review-summary {
     display: inline-block;
+}
+
+.mk-stars-icon {
+    background-image: url(https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_2x-13acd72bb22e0c502de00d0afe21c494871da686._V2_.png);
+    width: 80px;
+    height: 18px;
+    display: inline-block; 
+    background-size: 400px 900px;
+}
+.mk-stars-0-5 {
+    background-position: -238px -368px;    
+}
+
+.mk-stars-1 {
+    background-position: -68px -368px;
+}
+
+.mk-stars-1-5 {
+    background-position: -222px -368px;
+}
+
+.mk-stars-2 {
+    background-position: -52px -368px;
+}
+
+.mk-stars-2-5 {
+    background-position: -206px -368px;
+}
+
+.mk-stars-3 {
+    background-position: -36px -368px;
+}
+
+.mk-stars-3-5 {
+    background-position: -190px -368px;
+}
+
+.mk-stars-4 {
+    background-position: -20px -368px;
+}
+
+.mk-stars-4-5 {
+    background-position: -175px -368px;
+}
+
+.mk-stars-5 {
+    background-position: -5px -368px;
 }
 
 #mk-review-count-anchor {

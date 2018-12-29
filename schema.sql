@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS products (
 	id int NOT NULL AUTO_INCREMENT,
 	product_title varchar(255) NOT NULL,
 	vendor_name varchar(50) NOT NULL,
-	review_average int, 
+	review_average DECIMAL(2,1), 
 	review_count int DEFAULT 0,
 	answered_questions int, 
 	list_price varchar(15) NOT NULL,

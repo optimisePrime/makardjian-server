@@ -1,4 +1,5 @@
 import React from 'react';
+import Stars from './Stars.jsx';
 
 const ProductHeader = (props) => {
   return (
@@ -13,7 +14,9 @@ const ProductHeader = (props) => {
             <a id='mk-by-line-anchor' href=''>{props.product.vendor_name}</a>
           </div>
           <div id='mk-review-summary'>
-            <span id="mk-review-stars"></span>
+            <Stars product={props.product} />
+            <span className='mk-stars-down-arrow mk-stars-icon'></span>
+            <span className='mk-letter-space'></span>
             <span>
               <a id='mk-review-count-anchor'>{props.product.review_count} customer reviews</a>
             </span>

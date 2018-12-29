@@ -2,7 +2,7 @@ body {
     font-size: 13px;
     line-height: 19px;
     color: #111;
-    font-family: 'Lato'
+    font-family: "Lato", Arial, sans-serif
 }
 
 h1 {
@@ -60,20 +60,36 @@ hr {
 .mk-photo-thumbnail {
     height: 40px;
     width: 40px;
-    border-color: #e77600;
     padding: 0;
     cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #a2a6ac;
+    border-radius: 2px;
+    overflow: visible;
+}
+
+.mk-photo-thumbnail:hover {
+    box-shadow: 0px 0px 6px 1px #e77600;
+    border-color: #e77600;
+}
+
+.mk-highlighted-thumbnail {
+    box-shadow: 0px 0px 6px 1px #e77600;
+    border-color: #e77600;
 }
 
 #mk-main-photo-wrapper {
     display: inline-block;
-    padding-left: 10px;
+    padding-left: 1%;
 }
 
 #mk-main-img {
-    max-width: 400px;
-    max-height: 400px;
+    max-width: 543px;
+    max-height: 543px;
     cursor: pointer;
+    height: 100%!important;
+    width: auto;
 }
 
 #mk-main-photo-caption {
@@ -114,6 +130,70 @@ hr {
     display: inline-block;
 }
 
+.mk-letter-space {
+    display: inline-block;
+    width: 15px;
+}
+
+.mk-stars-icon {
+    background-image: url(https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_2x-13acd72bb22e0c502de00d0afe21c494871da686._V2_.png);
+    width: 80px;
+    height: 18px;
+    display: inline-block; 
+    background-size: 400px 900px;
+}
+.mk-stars-0-5 {
+    background-position: -238px -368px;    
+}
+
+.mk-stars-1 {
+    background-position: -68px -368px;
+}
+
+.mk-stars-1-5 {
+    background-position: -222px -368px;
+}
+
+.mk-stars-2 {
+    background-position: -52px -368px;
+}
+
+.mk-stars-2-5 {
+    background-position: -206px -368px;
+}
+
+.mk-stars-3 {
+    background-position: -36px -368px;
+}
+
+.mk-stars-3-5 {
+    background-position: -190px -368px;
+}
+
+.mk-stars-4 {
+    background-position: -20px -368px;
+}
+
+.mk-stars-4-5 {
+    background-position: -175px -368px;
+}
+
+.mk-stars-5 {
+    background-position: -5px -368px;
+}
+
+.mk-stars-down-arrow {
+    margin: 2px 0 2px .6em;
+    vertical-align: text-top;
+    width: 7px;
+    height: 5px;
+    background-position: -90px -5px;
+    opacity: .6;
+    background-size: 400px 900px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
 #mk-review-count-anchor {
     text-decoration: none;
     color: #0066c0;
@@ -141,6 +221,7 @@ hr {
 
 .mk-price-div {
     margin-bottom: 10px!important;
+    color: #555!important;
 }
 
 .mk-text-strike {
@@ -151,12 +232,33 @@ hr {
     text-align: right!important
 }
 
-#mk-discount-price {
+.mk-product-price {
     text-rendering: optimizeLegibility;
     font-size: 17px!important;
     line-height: 1.255!important 
 }
 
-.mk-red-price {
+.mk-red-font {
     color: #B12704!important;   
+}
+
+.mk-prime-icon {
+    background-image: url(https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_2x-13acd72bb22e0c502de00d0afe21c494871da686._V2_.png);
+    height: 15px;
+    width: 54px;
+    background-position: -5px -490px;
+    vertical-align: baseline;
+    background-size: 400px 900px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    margin-left: 4px;
+}
+
+#mk-description {
+    margin: 0 0 0 18px;
+    color: #949494;
+}
+
+.mk-bullet {
+    color: #111;
 }

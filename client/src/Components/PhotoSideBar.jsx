@@ -3,21 +3,21 @@ import PhotoThumbnail from './PhotoThumbnail.jsx';
 
 const PhotoSideBar = (props) => {
   return (
-      <ul id='mk-photo-sidebar-container'>
-        {
-         props.photoSideBar.map(photo =>
-            <PhotoThumbnail thumbnail={photo} />
+    <ul id='mk-photo-sidebar-container'>
+      {
+        props.photoSideBar.map(photo =>
+          <PhotoThumbnail thumbnail={photo} changeMainPhoto={props.changeMainPhoto}
+          highlightedThumbnail={props.highlightedThumbnail}/>
         )
-        }
-      </ul>
+      }
+    </ul>
   )
-
 }
 
 export default PhotoSideBar;
 
 
 /*
-the PhotoSideBar should be an unordered list and for each photo, a PhotoEntry mod
-should be invoked.
+12/28/18:
+For some reason highlightedThumbnail is not being passed down to the next component
 */

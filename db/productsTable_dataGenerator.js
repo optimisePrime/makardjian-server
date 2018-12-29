@@ -12,7 +12,8 @@ const discountGenerator = (stringPrice) => {
 
   if (randomNum <= 7) {
     discount = potentialDiscounts[randomIndex];
-    price -= (price * discount);
+    const dollarsOff = price * discount;
+    price -= dollarsOff;
     discount = ((discount * 100).toString() + '%');
     return ('$' + price.toFixed(2).toString());
   }
@@ -35,8 +36,10 @@ const descriptionGenerator = () => {
 const reviewAverageGenerator = () => {
   const possibleScores = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
   const randomScore = Math.floor(Math.random() * 9);
-  return possibleScores[randomScore];
-}
+  const result = possibleScores[randomScore];
+  console.log(result);
+  return result;
+};
 
 
 //  populate the products table with dynamic faker data

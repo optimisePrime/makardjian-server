@@ -81,13 +81,15 @@ hr {
 
 #mk-main-photo-wrapper {
     display: inline-block;
-    padding-left: 10px;
+    padding-left: 1%;
 }
 
 #mk-main-img {
-    max-width: 400px;
-    max-height: 400px;
+    max-width: 543px;
+    max-height: 543px;
     cursor: pointer;
+    height: 100%!important;
+    width: auto;
 }
 
 #mk-main-photo-caption {

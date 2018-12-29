@@ -8,6 +8,7 @@ class App extends React.Component {
     this.state = {
       photoSideBar: [],
       mainPhoto: {},
+      highlightedThumbnail: {},
       currentProduct: {},
       currentDescription: [],
     };
@@ -27,11 +28,12 @@ class App extends React.Component {
       })
     })
     .then(() => {
-      // console.log(this.state.photoSideBar)
+      console.log(this.state.photoSideBar)
       this.state.photoSideBar.forEach(photo => {
         if (photo.main_photo === 1) {
           this.setState({
-            mainPhoto: photo
+            mainPhoto: photo,
+            highlightedThumbnail: photo,
           });
         }
       });
@@ -51,7 +53,8 @@ class App extends React.Component {
 
   changeMainPhoto (photo) {
     this.setState({
-      mainPhoto: photo
+      mainPhoto: photo,
+      highlightedThumbnail: photo
     });
   };
 
@@ -61,7 +64,9 @@ class App extends React.Component {
         <div id="mk-temp-nav-bar"></div>
         <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
         <ProductOverview product={this.state.currentProduct} description={this.state.currentDescription}
-        photoSideBar={this.state.photoSideBar} mainPhoto={this.state.mainPhoto} changeMainPhoto={this.changeMainPhoto.bind(this)}/>
+          photoSideBar={this.state.photoSideBar} mainPhoto={this.state.mainPhoto} 
+          highlightedThumbnail={this.state.highlightedThumbnail}
+          changeMainPhoto={this.changeMainPhoto.bind(this)}/>
       </div>
     );
   };

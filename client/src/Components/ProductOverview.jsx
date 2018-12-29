@@ -5,8 +5,8 @@ import ProductColumn from './ProductColumn.jsx';
 const ProductOverview = (props) => {
   return (
     <div id='mk-product-overview'>
-      <PhotoColumn photoSideBar={props.photoSideBar}
-      mainPhoto={props.mainPhoto} changeMainPhoto={props.changeMainPhoto}/>
+      <PhotoColumn photoSideBar={props.photoSideBar} mainPhoto={props.mainPhoto} 
+        highlightedThumbnail={props.highlightedThumbnail} changeMainPhoto={props.changeMainPhoto}/>
       <ProductColumn product={props.product} description={props.description} />
     </div>
   )

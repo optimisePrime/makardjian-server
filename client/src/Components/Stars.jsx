@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Stars = (props) => {
-  console.log(props.product)
   const reviewAverage = props.product.review_average;
 
   if(reviewAverage === 1) {

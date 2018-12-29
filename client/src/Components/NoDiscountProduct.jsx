@@ -3,7 +3,7 @@ import React from 'react';
 const NoDiscountProduct = (props) => {
   if (props.product.prime === 1) {
     return (
-      <div>
+      <div className='mk-price-div'>
         <table>
           <tbody>
             <tr>
@@ -22,7 +22,7 @@ const NoDiscountProduct = (props) => {
     )
   } else {
     return (
-      <div>
+      <div className='mk-price-div'>
       <table>
         <tbody>
           <tr>

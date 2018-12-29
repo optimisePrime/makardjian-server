@@ -15,7 +15,8 @@ const ProductHeader = (props) => {
           </div>
           <div id='mk-review-summary'>
             <Stars product={props.product} />
-            <span id='mk-stars-down-arrow'>   </span>
+            <span className='mk-stars-down-arrow mk-stars-icon'></span>
+            <span className='mk-letter-space'></span>
             <span>
               <a id='mk-review-count-anchor'>{props.product.review_count} customer reviews</a>
             </span>

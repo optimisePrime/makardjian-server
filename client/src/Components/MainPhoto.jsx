@@ -6,7 +6,7 @@ class MainPhoto extends React.Component {
     
     this.state = {
       x: 0,
-      y: 0
+      y: 0,
     }
   }
 
@@ -32,7 +32,7 @@ class MainPhoto extends React.Component {
           </div>
           <div>
             <span id='mk-main-photo-caption'>
-              Roll over image to zoom in
+            Roll over image to zoom in
             </span>
           </div>
         </div>
@@ -42,17 +42,17 @@ class MainPhoto extends React.Component {
         <div id="mk-main-photo-wrapper">
         <div>
           <img id='mk-main-img' src={this.props.mainPhoto.url} alt="mainPhoto" 
-          style={{backgroundPosition: `${this.state.x} ${this.state.y}`}}
             onMouseLeave={ () => {this.props.displayZoomBox()} }
             onMouseMove={ (e) => { this.setCoords(e) }}
           />
         </div>
         <div id='mk-zoom-box'>
-          <img id='mk-zoom-img' src={this.props.mainPhoto.url}/>
+          <img id='mk-zoom-img' src={this.props.mainPhoto.url}
+          style={{backgroundPosition: `${this.state.x} ${this.state.y}`}}/>
         </div>
         <div>
           <span id='mk-main-photo-caption'>
-            Roll over image to zoom in
+          Roll over image to zoom in
           </span>
         </div>
       </div>
@@ -62,3 +62,4 @@ class MainPhoto extends React.Component {
 }
 
 export default MainPhoto;
+

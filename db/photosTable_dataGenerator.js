@@ -21,6 +21,6 @@ const photoGenerator = (productId) => {
 };
 
 //  populate the photos table with a random number of photos for each product
-for (let j = 1; j < 101; j++) {
+for (let j = 2; j < 101; j++) {
   photoGenerator(j);
 }

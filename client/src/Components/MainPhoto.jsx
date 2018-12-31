@@ -14,8 +14,8 @@ class MainPhoto extends React.Component {
     const x = event.clientX;
     const y = event.clientY;
     this.setState({
-      x: x,
-      y: y,
+      x: -x,
+      y: -y,
     })
     console.log(this.state.x, this.state.y)
   }
@@ -48,7 +48,7 @@ class MainPhoto extends React.Component {
         </div>
         <div id='mk-zoom-box'>
           <img id='mk-zoom-img' src={this.props.mainPhoto.url}
-          style={{backgroundPosition: `${this.state.x} ${this.state.y}`}}/>
+          style={{left: this.state.x, top: this.state.y}}/>
         </div>
         <div>
           <span id='mk-main-photo-caption'>
@@ -63,3 +63,10 @@ class MainPhoto extends React.Component {
 
 export default MainPhoto;
 
+
+/*
+Plan for implementing the zoom feature on a single product: 
+  /I need to make a new column in my photo table which will have a boolean value. Row name: 'zoom_photo'
+  /When I seed the photo table for a given product, I'll add all of the photos I have to the table 
+  ####COME BACK TO THIS PLAN AFTER I SEE IT WORK ONCE
+*/

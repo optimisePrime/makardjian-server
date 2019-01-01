@@ -82,8 +82,8 @@ hr {
 }
 
 #mk-main-photo-wrapper {
-    display: inline-block;
-    padding-left: 1%;
+    display: block;
+    padding-left: 18px;
 }
 
 #mk-main-img {
@@ -91,16 +91,12 @@ hr {
     max-height: 543px;
     cursor: pointer;
     width: auto;
-    position: relative;
-    margin-left: 75px;
-    /* display:block;
-    margin:auto; */
 }
 
 #mk-zoom-box {
     overflow: hidden;
     position: absolute;
-    background-color: yellow;
+    background-color: white;
     z-index: 190;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 6px 8px 2px;
     border: 1px solid rgb(148, 148, 148);

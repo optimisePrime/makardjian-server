@@ -13,11 +13,17 @@ class MainPhoto extends React.Component {
   setCoords (event) {
     const x = event.clientX;
     const y = event.clientY;
-    this.setState({
-      x: -x,
-      y: -y,
-    })
-    console.log(this.state.x, this.state.y)
+    if (100 < x && x < 443) {
+      this.setState({
+        x: -x + 100,
+      })
+    }
+    if (200 < y && y < 600) {
+      this.setState({
+        y: -y + 200,
+      })
+    }
+    console.log(this.state.x, this.state.y);
   }
 
   render() {
@@ -62,11 +68,3 @@ class MainPhoto extends React.Component {
 }
 
 export default MainPhoto;
-
-
-/*
-Plan for implementing the zoom feature on a single product: 
-  /I need to make a new column in my photo table which will have a boolean value. Row name: 'zoom_photo'
-  /When I seed the photo table for a given product, I'll add all of the photos I have to the table 
-  ####COME BACK TO THIS PLAN AFTER I SEE IT WORK ONCE
-*/

@@ -17,8 +17,8 @@ class App extends React.Component {
 
   componentDidMount() {
     // const randomId = Math.floor((Math.random() * 100) + 1);
-    this.getPhotos(1);
-    this.getProduct(1);
+    this.getPhotos(2);
+    this.getProduct(2);
   }
   
   getPhotos(id) {
@@ -29,7 +29,7 @@ class App extends React.Component {
       })
     })
     .then(() => {
-      console.log(this.state.photoSideBar)
+      // console.log(this.state.photoSideBar)
       this.state.photoSideBar.forEach(photo => {
         if (photo.main_photo === 1) {
           this.setState({

@@ -26,9 +26,9 @@ class PhotoThumbnail extends React.Component {
   render() {
     if (this.state.highlightedThumbnail === this.props.thumbnail) {
       return (
-        <li className='mk-photo-sidebar-list'>
+        <li className='mk-photo-sidebar-list-item'>
             <img id={JSON.stringify(this.props.thumbnail)} className='mk-photo-thumbnail mk-highlighted-thumbnail' 
-              src={this.props.thumbnail.url}
+              src={this.props.thumbnail.main_url}
               onMouseEnter={(e) => {
                 const photoObj = JSON.parse(e.target.id);
                 this.handleMouseHover(photoObj);
@@ -38,8 +38,8 @@ class PhotoThumbnail extends React.Component {
       )
     } else {
         return (
-          <li className='mk-photo-sidebar-list'>
-              <img id={JSON.stringify(this.props.thumbnail)} className='mk-photo-thumbnail' src={this.props.thumbnail.url}
+          <li className='mk-photo-sidebar-list-item'>
+              <img id={JSON.stringify(this.props.thumbnail)} className='mk-photo-thumbnail' src={this.props.thumbnail.main_url}
                 onMouseEnter={(e) => {
                 const photoObj = JSON.parse(e.target.id);
                 this.handleMouseHover(photoObj);

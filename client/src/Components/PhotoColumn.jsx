@@ -7,7 +7,8 @@ const PhotoColumn = (props) => {
     <div id='mk-photo-column'>      
       <PhotoSideBar photoSideBar={props.photoSideBar} changeMainPhoto={props.changeMainPhoto}
         highlightedThumbnail={props.highlightedThumbnail}/>
-      <MainPhoto mainPhoto={props.mainPhoto}/>
+      <MainPhoto mainPhoto={props.mainPhoto} showZoomBox={props.showZoomBox}
+        displayZoomBox={props.displayZoomBox}/>
     </div>
   )
 }

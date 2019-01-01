@@ -11,13 +11,14 @@ class App extends React.Component {
       highlightedThumbnail: {},
       currentProduct: {},
       currentDescription: [],
+      showZoomBox: false,
     };
   }
 
   componentDidMount() {
-    const randomId = Math.floor((Math.random() * 100) + 1);
-    this.getPhotos(randomId);
-    this.getProduct(randomId);
+    // const randomId = Math.floor((Math.random() * 100) + 1);
+    this.getPhotos(2);
+    this.getProduct(2);
   }
   
   getPhotos(id) {
@@ -28,7 +29,7 @@ class App extends React.Component {
       })
     })
     .then(() => {
-      console.log(this.state.photoSideBar)
+      // console.log(this.state.photoSideBar)
       this.state.photoSideBar.forEach(photo => {
         if (photo.main_photo === 1) {
           this.setState({
@@ -58,6 +59,12 @@ class App extends React.Component {
     });
   };
 
+  displayZoomBox () {
+    this.setState({
+      showZoomBox: !this.state.showZoomBox
+    });
+  }
+
   render() {
     return (
       <div data-test="component-app" id="mk-product-overview">
@@ -65,8 +72,9 @@ class App extends React.Component {
         <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
         <ProductOverview product={this.state.currentProduct} description={this.state.currentDescription}
           photoSideBar={this.state.photoSideBar} mainPhoto={this.state.mainPhoto} 
-          highlightedThumbnail={this.state.highlightedThumbnail}
-          changeMainPhoto={this.changeMainPhoto.bind(this)}/>
+          highlightedThumbnail={this.state.highlightedThumbnail} showZoomBox={this.state.showZoomBox}
+          changeMainPhoto={this.changeMainPhoto.bind(this)}
+          displayZoomBox={this.displayZoomBox.bind(this)}/>
       </div>
     );
   };

@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE TABLE IF NOT EXISTS photos (
 	photo_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	url varchar(255) NOT NULL,
+	main_url varchar(255) NOT NULL,
+	zoom_url varchar(255) NOT NULL,
 	product_id int,
 	main_photo tinyint(1) NOT NULL,
 	FOREIGN KEY (product_id) REFERENCES products(id)

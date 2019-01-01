@@ -25,7 +25,7 @@ class MainPhoto extends React.Component {
       return (
         <div id="mk-main-photo-wrapper">
           <div>
-            <img id='mk-main-img' src={this.props.mainPhoto.url} alt="mainPhoto" 
+            <img id='mk-main-img' src={this.props.mainPhoto.main_url} alt="mainPhoto" 
               onMouseEnter={ () => {this.props.displayZoomBox()} }
               onMouseMove={ (e) => { this.setCoords(e) }}
             />
@@ -41,13 +41,13 @@ class MainPhoto extends React.Component {
       return (
         <div id="mk-main-photo-wrapper">
         <div>
-          <img id='mk-main-img' src={this.props.mainPhoto.url} alt="mainPhoto" 
+          <img id='mk-main-img' src={this.props.mainPhoto.main_url} alt="mainPhoto" 
             onMouseLeave={ () => {this.props.displayZoomBox()} }
             onMouseMove={ (e) => { this.setCoords(e) }}
           />
         </div>
         <div id='mk-zoom-box'>
-          <img id='mk-zoom-img' src={this.props.mainPhoto.url}
+          <img id='mk-zoom-img' src={this.props.mainPhoto.zoom_url}
           style={{left: this.state.x, top: this.state.y}}/>
         </div>
         <div>

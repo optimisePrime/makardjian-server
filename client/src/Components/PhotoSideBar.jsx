@@ -6,16 +6,14 @@ const PhotoSideBar = (props) => {
     <ul id='mk-photo-sidebar-container'>
       {
         props.photoSideBar.map(photo =>
-          <PhotoThumbnail thumbnail={photo} changeMainPhoto={props.changeMainPhoto}
-          highlightedThumbnail={props.highlightedThumbnail}/>
+          <PhotoThumbnail thumbnail={photo} changeMainPhoto={props.changeMainPhoto} highlightedThumbnail={props.highlightedThumbnail} />
         )
       }
     </ul>
   )
-}
+};
 
 export default PhotoSideBar;
-
 
 /*
 12/28/18:

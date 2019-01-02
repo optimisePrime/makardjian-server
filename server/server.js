@@ -1,11 +1,13 @@
 const express = require('express');
 const path = require('path');
 const db = require('./../db/db.js');
+const cors = require('cors');
 //  ///////////////////////////////////
 const app = express();
 
 
 app.use(express.static(path.join(__dirname, './../client/dist/')));
+app.use(cors());
 
 
 const PORT = 3004;

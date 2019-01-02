@@ -13,7 +13,7 @@ class MainPhoto extends React.Component {
   setCoords (event) {
     const x = event.clientX;
     const y = event.clientY;
-    if (100 < x && x < 400) {
+    if (100 < x && x < 425) {
       this.setState({
         x: -x + 100,
       })

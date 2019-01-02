@@ -11,7 +11,7 @@ const ProductHeader = (props) => {
           </div>
           <div id='mk-by-div'>
             by
-            <a id='mk-by-line-anchor' href=''>{props.product.vendor_name}</a>
+            <a id='mk-by-line-anchor'>{props.product.vendor_name}</a>
           </div>
           <div id='mk-review-summary'>
             <Stars product={props.product} />
@@ -31,4 +31,3 @@ const ProductHeader = (props) => {
 };
 
 export default ProductHeader;
-

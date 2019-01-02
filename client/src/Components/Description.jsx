@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Description = (props) => {
-// console.log(props.description)
+
   return (
     <ul id='mk-description'>
       {

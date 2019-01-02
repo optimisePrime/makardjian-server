@@ -26,7 +26,7 @@ class App extends React.Component {
     .then((photos) => {
       this.setState({
         photoSideBar: photos.data
-      })
+      });
     })
     .then(() => {
       // console.log(this.state.photoSideBar)
@@ -38,16 +38,16 @@ class App extends React.Component {
           });
         }
       });
-    })
+    });
   }
 
   getProduct(id) {
     axios.get(`/products/${id}`)
     .then(data => {
-      const parsed = JSON.parse(data.data[0].description);
+      const parsedDescription = JSON.parse(data.data[0].description);
       this.setState({
         currentProduct: data.data[0],
-        currentDescription: parsed,
+        currentDescription: parsedDescription,
       });
     });
   };
@@ -81,3 +81,7 @@ class App extends React.Component {
 };
 
 export default App;
+
+//Note: 
+  //The reason there is a this.state.currentDescription is b/c I was having trouble parsing the description in child components.
+  

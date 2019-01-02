@@ -4,7 +4,7 @@ const DiscountProduct = (props) => {
   const numListPrice = Number(props.product.list_price.slice(1));
   const numPrice = Number(props.product.price.slice(1));
   const savingsNum = numListPrice - numPrice;
-  const savingsCur = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(savingsNum)
+  const savingsCur = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(savingsNum);
   
   if (props.product.prime) {
     return (
@@ -81,10 +81,3 @@ const DiscountProduct = (props) => {
 }
 
 export default DiscountProduct;
-
-/*
-Plan for Prime:
-  /split the DiscountProduct and NoDiscountProduct modules to have conditional rendering
-  /one will render the prime icon and the other will not.
-  
-*/

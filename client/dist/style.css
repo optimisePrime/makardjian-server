@@ -80,7 +80,10 @@ hr {
 }
 
 #mk-main-photo-wrapper {
-    display: block;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     padding-left: 18px;
 }
 

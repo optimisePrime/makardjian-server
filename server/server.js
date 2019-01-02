@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 
 
-app.use(express.static(path.join(__dirname, './../client/dist/')));
+app.use('/:productId', express.static(path.join(__dirname, './../client/dist/')));
 app.use(cors());
 
 

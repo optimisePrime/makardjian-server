@@ -19,23 +19,15 @@ hr {
     margin-bottom: 14px;
 }
 
-#mk-temp-nav-bar {
-    background: #232f3e;
-    height: 75px;
-}
-
-#mk-nav-ad {
-    font-size: 36px;
-    text-align: center;
-    height: 50px;
-    padding-top: 30px;
-    border-bottom: #111
+#mk-product-overview {
+    display: flex;
+    flex-direction: row;
 }
 
 #mk-photo-column {
     width: 45.0%;
     float: left;
-    position: sticky;
+    position: relative;
     height: 100%;
     padding-left: 32px;
 }
@@ -66,7 +58,6 @@ hr {
     border-color: #a2a6ac;
     border-radius: 2px;
     overflow: visible;
-    display: 
 }
 
 .mk-photo-thumbnail:hover {
@@ -88,11 +79,11 @@ hr {
 }
 
 #mk-main-img {
+    overflow: hidden;
     max-width: 543px;
     max-height: 543px;
     cursor: pointer;
     width: auto;
-   /* Figure out how to align the photos in the center of the container. */
 }
 
 #mk-zoom-box {
@@ -102,8 +93,8 @@ hr {
     z-index: 190;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 6px 8px 2px;
     border: 1px solid rgb(148, 148, 148);
-    margin-top: -548px;
-    margin-left: 575px;
+    left: 100%;
+    top: 2%;
     width: 700px;
     height: 750px;
     display: block;
@@ -124,8 +115,9 @@ hr {
 }
 
 #mk-product-column {
-    margin-left: 46%;
-    margin-right: 270px;
+    /* margin-left: 46%;
+    margin-right: 270px; */
+    margin-left: 50px;
 }
 
 

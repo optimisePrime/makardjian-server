@@ -115,9 +115,8 @@ hr {
 }
 
 #mk-product-column {
-    /* margin-left: 46%;
-    margin-right: 270px; */
-    margin-left: 50px;
+    padding-left: 4%;
+    padding-right: 4%;
 }
 
 

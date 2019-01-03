@@ -16,7 +16,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // const randomId = Math.floor((Math.random() * 100) + 1);
     const productId = window.location.pathname.split('/')[1]
     this.getPhotos(productId);
     this.getProduct(productId);
@@ -69,8 +68,6 @@ class App extends React.Component {
   render() {
     return (
       <div data-test="component-app" id="mk-product-overview">
-        <div id="mk-temp-nav-bar"></div>
-        <div id="mk-nav-ad">ADVERTISEMENT BANNER</div>
         <ProductOverview product={this.state.currentProduct} description={this.state.currentDescription}
           photoSideBar={this.state.photoSideBar} mainPhoto={this.state.mainPhoto} 
           highlightedThumbnail={this.state.highlightedThumbnail} showZoomBox={this.state.showZoomBox}

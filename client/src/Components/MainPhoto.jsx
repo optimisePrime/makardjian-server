@@ -23,14 +23,14 @@ class MainPhoto extends React.Component {
         y: -y + 200,
       })
     }
-    console.log(this.state.x, this.state.y);
+    // console.log(this.state.x, this.state.y);
   }
 
   render() {
     if (!this.props.showZoomBox) {
       return (
-        <div id="mk-main-photo-wrapper">
-          <div>
+        <React.Fragment>
+          <div id="mk-main-photo-wrapper">
             <img id='mk-main-img' src={this.props.mainPhoto.main_url} alt="mainPhoto" 
               onMouseEnter={ () => {this.props.displayZoomBox()} }
               onMouseMove={ (e) => { this.setCoords(e) }}
@@ -38,30 +38,30 @@ class MainPhoto extends React.Component {
           </div>
           <div>
             <span id='mk-main-photo-caption'>
-            Roll over image to zoom in
+              Roll over image to zoom in
             </span>
           </div>
-        </div>
+        </React.Fragment>
       )
     } else {
       return (
-        <div id="mk-main-photo-wrapper">
-        <div>
-          <img id='mk-main-img' src={this.props.mainPhoto.main_url} alt="mainPhoto" 
-            onMouseLeave={ () => {this.props.displayZoomBox()} }
-            onMouseMove={ (e) => { this.setCoords(e) }}
-          />
-        </div>
-        <div id='mk-zoom-box'>
-          <img id='mk-zoom-img' src={this.props.mainPhoto.zoom_url}
-          style={{left: this.state.x, top: this.state.y}}/>
-        </div>
-        <div>
-          <span id='mk-main-photo-caption'>
-          Roll over image to zoom in
-          </span>
-        </div>
-      </div>
+        <React.Fragment>
+          <div id="mk-main-photo-wrapper">
+            <img id='mk-main-img' src={this.props.mainPhoto.main_url} alt="mainPhoto" 
+              onMouseLeave={ () => {this.props.displayZoomBox()} }
+              onMouseMove={ (e) => { this.setCoords(e) }}
+            />
+          </div>
+          <div id='mk-zoom-box'>
+            <img id='mk-zoom-img' src={this.props.mainPhoto.zoom_url}
+            style={{left: this.state.x, top: this.state.y}}/>
+          </div>
+          <div>
+            <span id='mk-main-photo-caption'>
+              Roll over image to zoom in
+            </span>
+          </div>
+        </React.Fragment>
       )
     }
   }

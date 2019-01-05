@@ -37,9 +37,10 @@ const savePhotoRecord = (mainUrl, zoomUrl, productId, mainPhotoBool) => {
 
 const getPhotos = (req, res) => {
   const productId = req.params.productId;
-  const query = `SELECT * FROM PHOTOS WHERE product_id = ${productId};`;
+  const query = `SELECT * FROM photos WHERE product_id = ${productId};`;
   connection.query(query, (err, photos) => {
     if (err) {
+      console.log(err);
       res.statusCode(500).send();
     } else {
       res.send(photos);

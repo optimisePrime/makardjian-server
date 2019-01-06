@@ -8,6 +8,6 @@ COPY . /src/app
 
 RUN npm install
 
-EXPOSE 30004
+EXPOSE 3004
 
 CMD [ "npm", "run", "docker-start" ]

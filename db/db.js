@@ -1,13 +1,13 @@
 const mysql = require('mysql');
 
-const connection = mysql.createConnection({
-  host: '172.17.0.2',
-  user: 'root',
-  password: 'Mightymang0',
-  database: 'product_overview',
-});
+// const connection = mysql.createConnection({
+//   host: '172.17.0.2',
+//   user: 'root',
+//   password: 'Mightymang0',
+//   database: 'product_overview',
+// });
 
-connection.connect();
+// connection.connect();
 
 
 const saveProductRecord = (arrayRecord) => {
@@ -48,18 +48,62 @@ const getPhotos = (req, res) => {
   });
 };
 
-const getProduct = (req, res) => {
-  const id = req.params.productId;
-  const query = `SELECT * FROM products WHERE id = ${id};`;
-  connection.query(query, (err, data) => {
-    if (err) {
-      res.statusCode(500).send();
-    } else {
-      res.send(data);
-    }
-  });
-};
+// const getProduct = (req, res) => {
+//   const id = req.params.productId;
+//   const query = `SELECT * FROM products WHERE id = ${id};`;
+//   connection.query(query, (err, data) => {
+//     if (err) {
+//       res.statusCode(500).send();
+//     } else {
+//       res.send(data);
+//     }
+//   });
+// };
 
+
+
+
+/////////////POSTGRES
+
+const { Pool, Client } = require('pg')
+
+// const client = new Client({
+//   host: 'database.server.com',
+//   port: 3211,
+//   user: 'avademartini',
+//   password: 'secretpassword',
+// })
+
+
+
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/amazon';
+
+
+
+
+var getProduct = function() {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'fetch-user',
+        text: 'SELECT * FROM products WHERE id = $1',
+        values: [1]
+      }
+      client.query(query, (err, res) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log(res.rows[0])
+        }
+      })
+    }
+  })
+}
+
+  getProduct();
 
 module.exports = {
   saveProductRecord,

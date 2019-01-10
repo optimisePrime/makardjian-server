@@ -3,52 +3,17 @@ var path = require('path');
 var os = require('os');
 var faker = require('faker');
 var copyFrom = require('pg-copy-streams').from;
+var util = require('util');
 
 
- const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/avademartini';
-
-// const client = new pg.Client(connectionString);
-// client.connect();
-// const query = client.query(
-//   'CREATE TABLE items(id SERIAL PRIMARY KEY, text VARCHAR(40) not null, complete BOOLEAN)');
-// query.on('end', () => { client.end(); });
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/amazon';
 
 const { Pool, Client } = require('pg')
 
-// pools will use environment variables
-// for connection information
-const pool = new Pool()
-
-// pool.query('SELECT * from items', (err, res) => {
-//   console.log(err, res)
-//   pool.end()
-// })
-
-pool.connect(function(err, client, done) {
-  var stream = client.query(copyFrom('COPY products (product_title, vendor_name, review_average, review_count, answered_questions, list_price, discount, price, prime, description) FROM STDIN CSV'));
-  var fileStream = fs.createReadStream('products1.csv');
-  fileStream.on('error', (error) => console.log("Error reading file", error));
-  stream.on('error', (error) => console.log("Error in copy command", error));
-  stream.on('end', () => console.log("Completed loading table"));
-  fileStream.pipe(stream);
-})
-
-// pool.connect(function(err, client, done) {
-//   var stream = client.query("COPY products FROM '/Users/avademartini/Desktop/MASTER/SDC/summary-nick/db/products1.csv' WITH (FORMAT csv)", (err, res) => {
-//     console.log(err, res)
-//     pool.end()
-//   })
-// })
-
-// pool shutdown
-pool.end()
-
-
-// output file in the same folder
 var filename = path.join(__dirname, 'products1.csv');
-var output = []; // holds all rows of data
 
 let discount;
+
 var discountGenerator = (stringPrice) => {
   let price = Number(stringPrice.slice(1));
   var randomNum = Math.floor(Math.random() * 10) + 1;
@@ -72,6 +37,60 @@ var reviewAverageGenerator = () => {
   return result;
 };
 
+var clearFile = function() {
+  var data = '';
+  fs.writeFileSync(filename, data);
+  console.log('Done clearing file')
+}
+
+var writeToDb = function(input) {
+    console.log("Currently on loop #", input)
+    if (input < 100) {
+      var pool = new Pool()
+      pool.connect(function(err, client, done) {
+        if (err) {
+          console.log('err connecting', err)
+        } else {
+          var stream = client.query(copyFrom('COPY products (product_title, vendor_name, review_average, review_count, answered_questions, list_price, discount, price, prime, description) FROM STDIN CSV'));
+          var fileStream = fs.createReadStream('products1.csv');
+          fileStream.on('error', (error) => console.log("Error reading file", error));
+          stream.on('error', (error) => console.log("Error in copy command", error));
+          stream.on('end', () => {
+              console.log('Done writing to db')
+              writeToDb(input + 1)  
+            })
+          fileStream.pipe(stream)
+      }
+    })
+      pool.end();
+    }
+}
+
+var output = [];
+
+var writeBatch = function(cb) {
+  clearFile();
+  for (var i = 0; i < 100; i++) {
+
+    discount = null;
+    var productTitle = `"${faker.commerce.productName()}, ${faker.lorem.sentence().slice(0, -1)}"`;
+    var vendorName = `"${faker.company.companyName()}"`;
+    var reviewAverage = `${reviewAverageGenerator()}`;
+    var reviewCount = `${Math.round((Math.random() * 3000))}`;
+    var answeredQuestions = `${Math.round((Math.random() * 49) + 1)}`;
+    var listPrice = `${faker.commerce.price(15.00, 5000, 2, '$')}`;
+    var price = `${discountGenerator(listPrice)}`;
+    var prime = `${Math.round(Math.random())}`;
+    var description = `"${descriptionGenerator()}"`;
+
+    //  build an array record to pass into the db.saveProductRecord function
+    var record = [productTitle, vendorName, reviewAverage, reviewCount,
+      answeredQuestions, listPrice, discount, price, prime, description];
+
+    output.push(record.join());
+  }
+    fs.writeFileSync(filename, output.join(os.EOL));
+}
 
 //  generate a stringified object of a random number of loremIpsum paragraphs
 var descriptionGenerator = () => {
@@ -80,28 +99,21 @@ var descriptionGenerator = () => {
 };
 
 
+writeBatch();
 
+// var writeFn = function(input) {
+//   console.log("loop called")
+//   console.log(input)
+//   if (input < 100) {
+//     writeToDb();
+//     setTimeout(() =>{writeFn(input + 1)}, 8000);
+//   }
+// }
 
-for (var i = 1; i < 100000; i++) {
-  discount = null;
-  var productTitle = `"${faker.commerce.productName()}, ${faker.lorem.sentence().slice(0, -1)}"`;
-  var vendorName = `"${faker.company.companyName()}"`;
-  var reviewAverage = `${reviewAverageGenerator()}`;
-  var reviewCount = `${Math.round((Math.random() * 3000))}`;
-  var answeredQuestions = `${Math.round((Math.random() * 49) + 1)}`;
-  var listPrice = `${faker.commerce.price(15.00, 5000, 2, '$')}`;
-  var price = `${discountGenerator(listPrice)}`;
-  var prime = `${Math.round(Math.random())}`;
-  var description = `"${descriptionGenerator()}"`;
+// writeFn(0);
 
-  //  build an array record to pass into the db.saveProductRecord function
-  var record = [productTitle, vendorName, reviewAverage, reviewCount,
-    answeredQuestions, listPrice, discount, price, prime, description];
+writeToDb(0);
 
-  output.push(record.join());
-}
-
- //  fs.writeFileSync(filename, output.join(os.EOL));
 
 
 

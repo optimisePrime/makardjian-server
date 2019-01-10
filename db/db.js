@@ -113,7 +113,7 @@ const saveProductRecord = (arrayRecord) => {
       console.log(err);
     } else {
       const query = {
-        name: 'fetch-user',
+        name: 'insert-product',
         text: `INSERT INTO products 
   (product_title, vendor_name, review_average, review_count, answered_questions,
   list_price, discount, price, prime, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
@@ -124,7 +124,42 @@ const saveProductRecord = (arrayRecord) => {
           console.log("err", err.stack)
         } else {
           console.log(res)
-          res.end();
+          res.statusCode(500).send();
+        }
+      })
+    }
+  })
+};
+
+
+const updateProductRecord = (id, newArrayRecord) => {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    var queryInputs = newArrayRecord.concat(id);
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'update-product',
+        text: `UPDATE products SET
+          product_title = $1,
+          vendor_name = $2 ,
+          review_average = $3,
+          review_count = $4,
+          answered_questions = $5,
+          list_price = $6,
+          discount = $7,
+          price = $8,
+          prime = $9,
+          description = $10
+          WHERE id = $11`,
+        values: queryInputs
+      }
+      client.query(query, (err, res) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log("Success updating product in Postgres")
         }
       })
     }
@@ -133,8 +168,8 @@ const saveProductRecord = (arrayRecord) => {
 
  // getProduct(64642266);
 
-var record = ["blooUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum","Abernathy LLC",'3','2484','12','$4300.00','50%','$2150.00','0',"Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt."]
-saveProductRecord(record);
+var record = ["beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum","Abernathy LLC",'3','2484','12','$4300.00','50%','$2150.00','0',"Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt."]
+updateProductRecord(64658011, record)
 
 module.exports = {
   saveProductRecord,

@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+// const mysql = require('mysql');
 
 // const connection = mysql.createConnection({
 //   host: '172.17.0.2',
@@ -10,18 +10,18 @@ const mysql = require('mysql');
 // connection.connect();
 
 
-const saveProductRecord = (arrayRecord) => {
-  const query = `INSERT INTO products 
-  (product_title, vendor_name, review_average, review_count, answered_questions,
-  list_price, discount, price, prime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-  connection.query(query, arrayRecord, (err) => {
-    if (err) {
-      throw (err);
-    } else {
-      console.log('success');
-    }
-  });
-};
+// const saveProductRecord = (arrayRecord) => {
+//   const query = `INSERT INTO products 
+//   (product_title, vendor_name, review_average, review_count, answered_questions,
+//   list_price, discount, price, prime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+//   connection.query(query, arrayRecord, (err) => {
+//     if (err) {
+//       throw (err);
+//     } else {
+//       console.log('success');
+//     }
+//   });
+// };
 
 const savePhotoRecord = (mainUrl, zoomUrl, productId, mainPhotoBool) => {
   const query = `INSERT INTO photos (main_url, zoom_url, product_id, main_photo) 
@@ -105,7 +105,36 @@ var getProduct = function(req, res) {
   })
 }
 
+
+const saveProductRecord = (arrayRecord) => {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'fetch-user',
+        text: `INSERT INTO products 
+  (product_title, vendor_name, review_average, review_count, answered_questions,
+  list_price, discount, price, prime, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        values: arrayRecord
+      }
+      client.query(query, (err, res) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log(res)
+          res.end();
+        }
+      })
+    }
+  })
+};
+
  // getProduct(64642266);
+
+var record = ["blooUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum","Abernathy LLC",'3','2484','12','$4300.00','50%','$2150.00','0',"Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt."]
+saveProductRecord(record);
 
 module.exports = {
   saveProductRecord,

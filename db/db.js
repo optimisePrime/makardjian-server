@@ -166,10 +166,32 @@ const updateProductRecord = (id, newArrayRecord) => {
   })
 };
 
+const deleteProductRecord = (id) => {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'delete-product',
+        text: `DELETE FROM products WHERE ID = $1`,
+        values: [id]
+      }
+      client.query(query, (err, res) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log("Deleted record")
+        }
+      })
+    }
+  })
+}
+
  // getProduct(64642266);
 
 var record = ["beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum","Abernathy LLC",'3','2484','12','$4300.00','50%','$2150.00','0',"Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt."]
-updateProductRecord(64658011, record)
+deleteProductRecord(64658011)
 
 module.exports = {
   saveProductRecord,

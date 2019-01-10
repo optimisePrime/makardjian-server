@@ -81,7 +81,8 @@ const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/
 
 
 
-var getProduct = function() {
+var getProduct = function(req, res) {
+  var id = req.params.productId;
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     if (err) {
@@ -90,20 +91,21 @@ var getProduct = function() {
       const query = {
         name: 'fetch-user',
         text: 'SELECT * FROM products WHERE id = $1',
-        values: [1]
+        values: [id]
       }
-      client.query(query, (err, res) => {
+      client.query(query, (err, data) => {
         if (err) {
           console.log("err", err.stack)
         } else {
-          console.log(res.rows[0])
+          console.log(data.rows[0])
+          res.send(data.rows[0])
         }
       })
     }
   })
 }
 
-  getProduct();
+ // getProduct(64642266);
 
 module.exports = {
   saveProductRecord,

@@ -287,15 +287,43 @@ var deleteProductRecordCAS = function(productId) {
   }); 
 }
 
+var updateProductRecordCAS = function(id, newArrayRecord) {
+  newArrayRecord.push(id)
+  client.connect(function(err,result){
+    var query = `UPDATE amazon.products SET
+          product_title = ?,
+          vendor_name = ?,
+          review_average = ?,
+          review_count = ?,
+          answered_questions = ?,
+          list_price = ?,
+          discount = ?,
+          price = ?,
+          prime = ?,
+          description = ?,
+          photos = ?
+          WHERE product_id = ?`
+    client.execute(query,newArrayRecord, {prepare: true}, function(err, result){
+      if(err){
+        console.log("error, ", err)
+      } else {
+        console.log(result)
+        // console.log(res);
+        // res.send(result.rows[0])
+      }
+    });
+  });   
+}
 
 
 
+ updateProductRecordCAS(3, ['beepoooop498r7234987r6239487r5632948r5672ad;lfkj340r7134rUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', ['asdf']])
   // createDbCAS();  //This properly creates the empty DB
  //saveProductRecordCAS(record);
 
 //getProductCAS(3);
 
-deleteProductRecordCAS(3);
+// deleteProductRecordCAS(3);
 
 
 

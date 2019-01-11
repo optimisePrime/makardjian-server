@@ -45,7 +45,7 @@ var clearFile = function() {
 
 var writeToDb = function(input) {
     console.log("Currently on loop #", input)
-    if (input < 100) {
+    if (input < 40) {
       var pool = new Pool()
       pool.connect(function(err, client, done) {
         if (err) {
@@ -70,7 +70,7 @@ var output = [];
 
 var writeBatch = function(cb) {
   clearFile();
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < 250000; i++) {
 
     discount = null;
     var productTitle = `"${faker.commerce.productName()}, ${faker.lorem.sentence().slice(0, -1)}"`;
@@ -100,17 +100,6 @@ var descriptionGenerator = () => {
 
 
 writeBatch();
-
-// var writeFn = function(input) {
-//   console.log("loop called")
-//   console.log(input)
-//   if (input < 100) {
-//     writeToDb();
-//     setTimeout(() =>{writeFn(input + 1)}, 8000);
-//   }
-// }
-
-// writeFn(0);
 
 writeToDb(0);
 

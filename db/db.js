@@ -1,27 +1,6 @@
-// const mysql = require('mysql');
-
-// const connection = mysql.createConnection({
-//   host: '172.17.0.2',
-//   user: 'root',
-//   password: 'Mightymang0',
-//   database: 'product_overview',
-// });
-
-// connection.connect();
 
 
-// const saveProductRecord = (arrayRecord) => {
-//   const query = `INSERT INTO products 
-//   (product_title, vendor_name, review_average, review_count, answered_questions,
-//   list_price, discount, price, prime, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-//   connection.query(query, arrayRecord, (err) => {
-//     if (err) {
-//       throw (err);
-//     } else {
-//       console.log('success');
-//     }
-//   });
-// };
+////////MYSQL - ORIGINAL
 
 const savePhotoRecord = (mainUrl, zoomUrl, productId, mainPhotoBool) => {
   const query = `INSERT INTO photos (main_url, zoom_url, product_id, main_photo) 
@@ -65,23 +44,13 @@ const getPhotos = (req, res) => {
 
 /////////////POSTGRES
 
-const { Pool, Client } = require('pg')
-
-// const client = new Client({
-//   host: 'database.server.com',
-//   port: 3211,
-//   user: 'avademartini',
-//   password: 'secretpassword',
-// })
-
+// const { Pool, Client } = require('pg')
 
 
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/amazon';
 
 
-
-
-var getProduct = function(req, res) {
+var getProductPG = function(req, res) {
   var id = req.params.productId;
   var pool = new Pool();
   pool.connect(function(err, client, done) {
@@ -89,7 +58,7 @@ var getProduct = function(req, res) {
       console.log(err);
     } else {
       const query = {
-        name: 'fetch-user',
+        name: 'fetch-product',
         text: 'SELECT * FROM products WHERE id = $1',
         values: [id]
       }
@@ -106,7 +75,7 @@ var getProduct = function(req, res) {
 }
 
 
-const saveProductRecord = (arrayRecord) => {
+const saveProductRecordPG = (arrayRecord) => {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     if (err) {
@@ -132,7 +101,7 @@ const saveProductRecord = (arrayRecord) => {
 };
 
 
-const updateProductRecord = (id, newArrayRecord) => {
+const updateProductRecordPG = (id, newArrayRecord) => {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     var queryInputs = newArrayRecord.concat(id);
@@ -166,7 +135,7 @@ const updateProductRecord = (id, newArrayRecord) => {
   })
 };
 
-const deleteProductRecord = (id) => {
+const deleteProductRecordPG = (id) => {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     if (err) {
@@ -191,11 +160,42 @@ const deleteProductRecord = (id) => {
  // getProduct(64642266);
 
 var record = ["beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum","Abernathy LLC",'3','2484','12','$4300.00','50%','$2150.00','0',"Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt."]
-deleteProductRecord(64658011)
+//deleteProductRecord(64658011)
 
-module.exports = {
-  saveProductRecord,
-  savePhotoRecord,
-  getPhotos,
-  getProduct,
+
+///////////CASSANDRA
+
+const cassandra = require('cassandra-driver');
+
+var client = new cassandra.Client({contactPoints : ['127.0.0.1'], localDataCenter: 'datacenter1', keyspace: 'students_details' });
+
+var getProductCAS = function(req, res) {
+  client.connect(function(err,result){
+    var getAllUsers = 'SELECT * FROM students_details.student';
+    console.log('cassandra connected')
+      client.execute(getAllUsers,[], function(err, result){
+        if(err){
+          console.log("error, ", err)
+        } else {
+          console.log(result.rows[0])
+          // console.log(res);
+          // res.send(result.rows[0])
+        }
+      });
+});
 };
+
+getProductCAS();
+
+
+
+// module.exports = {
+//   savePhotoRecord,
+//   getPhotosPG,
+//   getProductPG,
+// };
+
+
+
+
+

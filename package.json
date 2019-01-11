@@ -18,6 +18,8 @@
     "docker-start": "node server/server.js & node db/productsTable_dataGenerator.js"
   },
   "dependencies": {
+    "assert": "^1.4.1",
+    "async": "^2.6.1",
     "axios": "^0.18.0",
     "bluebird": "^3.5.3",
     "cassandra-driver": "^4.0.0",
@@ -34,7 +36,8 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "sass-loader": "^7.1.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.9.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

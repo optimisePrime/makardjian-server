@@ -62,7 +62,7 @@ var writeToDb = function(input) {
           fileStream.pipe(stream)
       }
     })
-      pool.end();
+      pool.end(); //try to move this to after writeToDb
     }
 }
 

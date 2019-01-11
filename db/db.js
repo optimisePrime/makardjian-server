@@ -1,5 +1,4 @@
 
-
 ////////MYSQL - ORIGINAL
 
 const savePhotoRecord = (mainUrl, zoomUrl, productId, mainPhotoBool) => {
@@ -159,33 +158,124 @@ const deleteProductRecordPG = (id) => {
 
  // getProduct(64642266);
 
-var record = ["beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum","Abernathy LLC",'3','2484','12','$4300.00','50%','$2150.00','0',"Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt."]
 //deleteProductRecord(64658011)
 
 
 ///////////CASSANDRA
 
+const async = require('async');
+const assert = require('assert');
+
 const cassandra = require('cassandra-driver');
+
+const Uuid = cassandra.types.Uuid;
 
 var client = new cassandra.Client({contactPoints : ['127.0.0.1'], localDataCenter: 'datacenter1', keyspace: 'students_details' });
 
-var getProductCAS = function(req, res) {
-  client.connect(function(err,result){
-    var getAllUsers = 'SELECT * FROM students_details.student';
-    console.log('cassandra connected')
-      client.execute(getAllUsers,[], function(err, result){
-        if(err){
-          console.log("error, ", err)
-        } else {
-          console.log(result.rows[0])
-          // console.log(res);
-          // res.send(result.rows[0])
-        }
-      });
-});
-};
+// var getProductCAS = function(req, res) {
+//   client.connect()
+//     .then(function () {
+//       return client.execute('SELECT * FROM system.local');
+//     })
+//     .then(function (result) {
+//       const row = result.rows[0];
+//       console.log('Obtained row: ', row);
+//       console.log('Shutting down');
+//       return client.shutdown();
+//     })
+//     .catch(function (err) {
+//       console.error('There was an error when connecting', err);
+//       return client.shutdown().then(() => { throw err; });
+//   });
 
-getProductCAS();
+
+//   client.connect(function(err,result){
+//   var getAllUsers = 'SELECT * FROM students_details.student';
+//   console.log('Connected to cluster with %d host(s): %j', client.hosts.length, client.hosts.keys());
+//   console.log('Keyspaces: %j', Object.keys(client.metadata.keyspaces));
+//   console.log('cassandra connected')
+//   client.execute(getAllUsers,[], function(err, result){
+//     if(err){
+//       console.log("error, ", err)
+//     } else {
+//       console.log(result.rows[0])
+//       // console.log(res);
+//       // res.send(result.rows[0])
+//     }
+//   });
+// });
+// };
+
+
+
+var getProductCAS = function(productId) {
+  client.connect(function(err,result){
+    var query = 'SELECT * FROM amazon.products WHERE id = ?';
+    client.execute(query,[productId], function(err, result){
+      if(err){
+        console.log("error, ", err)
+      } else {
+        console.log(result.rows[0])
+        // console.log(res);
+        // res.send(result.rows[0])
+      }
+    });
+  });
+}
+var record = [`${Uuid.random()}`,'3' ,'beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', ['asdf']]
+//console.log(record);
+
+var saveProductRecordCAS = function(arrayRecord) {
+  client.connect(function(err,result){
+    var query = 'INSERT INTO amazon.products (id, product_id, product_title, vendor_name, review_average, review_count, answered_questions, list_price, discount, price, prime, description, photos) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
+    client.execute(query,arrayRecord, {prepare: true}, function(err, result){
+      if(err){
+        console.log("error, ", err)
+      } else {
+        console.log(result)
+        // console.log(res);
+        // res.send(result.rows[0])
+      }
+    });
+  }); 
+}
+
+var createDbCAS = function() {
+  const id = cassandra.types.Uuid.random();
+
+  async.series([
+    function connect(next) {
+      client.connect(next);
+    },
+    function createKeyspace(next) {
+      const query = "CREATE KEYSPACE IF NOT EXISTS amazon WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3' }";
+      client.execute(query, next);
+    },
+    function deleteTable(next) {
+      const query = "DROP TABLE IF EXISTS amazon.products";
+      client.execute(query, next);
+    },
+    function createTable(next) {
+      const query = "CREATE TABLE IF NOT EXISTS amazon.products (id uuid, product_id int, product_title text, vendor_name text, review_average decimal, review_count smallint, answered_questions int, list_price varchar, discount varchar, price varchar, prime smallint, description text, photos set<text>, PRIMARY KEY(id))";
+      client.execute(query, next);
+    }], function (err) {
+    if (err) {
+      console.error('There was an error', err.message, err.stack);
+    }
+    console.log('Shutting down');
+    client.shutdown(() => {
+      if (err) {
+        throw err;
+      }
+    });
+  });
+}
+
+
+
+
+  // createDbCAS();  //This properly creates the empty DB
+ saveProductRecordCAS(record);
 
 
 

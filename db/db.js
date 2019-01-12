@@ -291,7 +291,7 @@ var getProductCAS = function(productId) {
   });
 }
 
-var record = [`${Uuid.random()}`,'3' ,'beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', ['asdf']]
+var record = [`${Uuid.random()}`,'3' ,'beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http', 'yo'], ['bro', 'yes']]]
 
 
 var createDbCAS = function() {
@@ -310,7 +310,7 @@ var createDbCAS = function() {
       client.execute(query, next);
     },
     function createTable(next) {
-      const query = "CREATE TABLE IF NOT EXISTS amazon.products (id uuid, product_id int, product_title text, vendor_name text, review_average decimal, review_count smallint, answered_questions int, list_price varchar, discount varchar, price varchar, prime smallint, description text, photos set<text>, PRIMARY KEY(product_id))";
+      const query = "CREATE TABLE IF NOT EXISTS amazon.products (id uuid, product_id int, product_title text, vendor_name text, review_average decimal, review_count smallint, answered_questions int, list_price varchar, discount varchar, price varchar, prime smallint, description text, photos list<frozen <list<text>>>, PRIMARY KEY(product_id))";
       client.execute(query, next);
     }], function (err) {
     if (err) {
@@ -382,13 +382,17 @@ var updateProductRecordCAS = function(id, newArrayRecord) {
 }
 
 //dropPhotosTablePG();
-createPhotosTablePG();
+//createPhotosTablePG();
 
 
-// updateProductRecordCAS(3, ['beepoooop498r7234987r6239487r5632948r5672ad;lfkj340r7134rUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', ['asdf']])
-//dropTablePg();
+ //updateProductRecordCAS(3, ['beepoooop498r7234987r6239487r5632948r5672ad;lfkj340r7134rUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http', 'yo'], ['bro', 'yes']]]);
+//dropProductsTablePG();
 //createTablePG();
 //getProductCAS(3);
+
+
+//createDbCAS();
+saveProductRecordCAS(record);
 
 // deleteProductRecordCAS(3);
 

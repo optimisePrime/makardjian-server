@@ -4,15 +4,16 @@ var os = require('os');
 var faker = require('faker');
 var copyFrom = require('pg-copy-streams').from;
 var util = require('util');
+var productArray = require('./sdc_fake_data_generator_photos.js')
 
 
-const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/amazon';
 
-const { Pool, Client } = require('pg')
+//////////////POSTGRES
+var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/amazon';
 
-var filename = path.join(__dirname, 'products1.csv');
+var { Pool, Client } = require('pg')
 
-let discount;
+var filename = path.join(__dirname, 'products_1.csv');
 
 var discountGenerator = (stringPrice) => {
   let price = Number(stringPrice.slice(1));
@@ -52,7 +53,7 @@ var writeToDb = function(input) {
           console.log('err connecting', err)
         } else {
           var stream = client.query(copyFrom('COPY products (product_title, vendor_name, review_average, review_count, answered_questions, list_price, discount, price, prime, description) FROM STDIN CSV'));
-          var fileStream = fs.createReadStream('products1.csv');
+          var fileStream = fs.createReadStream('products_1.csv');
           fileStream.on('error', (error) => console.log("Error reading file", error));
           stream.on('error', (error) => console.log("Error in copy command", error));
           stream.on('end', () => {
@@ -68,7 +69,7 @@ var writeToDb = function(input) {
 
 var output = [];
 
-var writeBatch = function() {
+var writeBatchPG = function() {
   clearFile();
   for (var i = 0; i < 100000; i++) {
 
@@ -99,11 +100,79 @@ var descriptionGenerator = () => {
 };
 
 
-writeBatch();
+//writeBatchPG();
 
 
-writeToDb(0);
+//writeToDb(0);
 
 
+///////////CASSANDRA
+
+         ` product_title = ?,
+          vendor_name = ?,
+          review_average = ?,
+          review_count = ?,
+          answered_questions = ?,
+          list_price = ?,
+          discount = ?,
+          price = ?,
+          prime = ?,
+          description = ?,
+          photos = ?
+          WHERE product_id = ?`
+
+var writeBatchCAS = function() {
+  clearFile();
+  for (var i = 0; i < 100000; i++) {
+
+    var product_title = `"${faker.commerce.productName()}, ${faker.lorem.sentence().slice(0, -1)}"`;
+    var vendor_name = `"${faker.company.companyName()}"`;
+    var review_average = `${reviewAverageGenerator()}`;
+    var review_count = `${Math.round((Math.random() * 3000))}`;
+    var answered_questions = `${Math.round((Math.random() * 49) + 1)}`;
+    var list_price = `${faker.commerce.price(15.00, 5000, 2, '$')}`;
+    var discount = null;
+    var price = `${discountGenerator(listPrice)}`;
+    var prime = `${Math.round(Math.random())}`;
+    var description = `"${descriptionGenerator()}"`;
+    var photos = [];
+
+    //  build an array record to pass into the db.saveProductRecord function
+    var record = [productTitle, vendorName, reviewAverage, reviewCount,
+      answeredQuestions, listPrice, discount, price, prime, description];
+
+    output.push(record.join());
+  }
+    fs.writeFileSync(filename, output.join(os.EOL));
+}
+
+const async = require('async');
+const assert = require('assert');
+const cassandra = require('cassandra-driver');
+
+
+var client = new cassandra.Client({contactPoints : ['127.0.0.1'], localDataCenter: 'datacenter1', keyspace: 'students_details' });
+
+//Cassandra db has to be seeded at command line, npm script to come 
+
+
+var getProductCAS = function(productId) {
+  client.connect(function(err,result){
+    var query = 'SELECT * FROM amazon.products WHERE product_id = ?';
+    client.execute(query,[productId], {prepare: true}, function(err, result){
+      if(err){
+        console.log("error, ", err)
+      } else {
+        console.log(result.rows[0])
+        // console.log(res);
+        // res.send(result.rows[0])
+      }
+    });
+  });
+}
+
+console.log(productArray)
+
+// getProductCAS(3);
 
 

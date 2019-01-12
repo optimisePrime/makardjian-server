@@ -54,20 +54,6 @@ products.push([
   ['https://images-na.ssl-images-amazon.com/images/I/71f0rd1qtWL._UX679_.jpg', 'https://images-na.ssl-images-amazon.com/images/I/71f0rd1qtWL._UL1000_.jpg'],
 ]);
 
-
-// const photoGenerator = (productId) => {
-//   const randomIndex = Math.floor(Math.random() * products.length);
-//   const randomProduct = products[randomIndex]; 
-
-//   for (let j = 0; j < randomProduct.length; j++) {
-//     if (j === 0) {
-//       db.savePhotoRecord(randomProduct[j][0], randomProduct[j][1], productId, 1);
-//     } else {
-//       db.savePhotoRecord(randomProduct[j][0], randomProduct[j][1], productId, 0);
-//     }
-//   }
-// };
-
 var output = [];
 
 var clearFile = function() {
@@ -100,7 +86,7 @@ for (let i = 1; i < 50000; i++) {
 fs.writeFileSync(filename, output.join(os.EOL));
 
 
-var writeToDb = function(input) {
+var writeToDbPG = function(input) {
     console.log("Currently on loop #", input)
     if (input < 250) {
       var pool = new Pool()
@@ -124,8 +110,13 @@ var writeToDb = function(input) {
     }
 }
 
-writeToDb(0);
 
+
+//writeToDb(0);
+
+module.exports = {
+  products
+}
 
 
 

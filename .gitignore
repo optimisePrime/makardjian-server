@@ -1,3 +1,6 @@
 node_modules/
+db/product1.csv
+db/products_1_cas.cvs
+db/photos1.csv
 
 /client/dist/bundle.js

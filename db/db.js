@@ -26,27 +26,108 @@ const getPhotos = (req, res) => {
   });
 };
 
-// const getProduct = (req, res) => {
-//   const id = req.params.productId;
-//   const query = `SELECT * FROM products WHERE id = ${id};`;
-//   connection.query(query, (err, data) => {
-//     if (err) {
-//       res.statusCode(500).send();
-//     } else {
-//       res.send(data);
-//     }
-//   });
-// };
-
-
 
 
 /////////////POSTGRES
 
-// const { Pool, Client } = require('pg')
+const { Pool, Client } = require('pg')
 
 
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/amazon';
+
+var dropProductsTablePG = function() {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'drop-product-table',
+        text: `DROP TABLE if exists products`,
+        values: null
+      }
+      client.query(query, (err, res) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log("Dropped products table")
+        }
+      })
+    }
+  })
+};
+
+var dropPhotosTablePG = function() {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'drop-photos-table',
+        text: `DROP TABLE if exists photos`,
+        values: null
+      }
+      client.query(query, (err, res) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log("Dropped photos table")
+        }
+      })
+    }
+  })
+};
+
+
+var createProductTablePG = function() {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'create-product-table',
+        text: `CREATE TABLE products(id serial PRIMARY KEY, product_title varchar(255) NOT NULL, vendor_name varchar(50) NOT NULL,
+        review_average DECIMAL(2,1), review_count smallint DEFAULT 0, answered_questions integer, list_price varchar(15) NOT NULL,
+        discount varchar(4), price varchar(15) NOT NULL, prime smallint NOT NULL,  description text)`,
+        values: null
+      }
+      client.query(query, (err, res) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log("Created products table")
+        }
+      })
+    }
+  })
+};
+
+
+
+var createPhotosTablePG = function() {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'create-photos-table',
+        text: `CREATE TABLE photos(photo_id serial PRIMARY KEY, main_url varchar(255) NOT NULL, zoom_url varchar(255) NOT NULL,
+        product_id integer, main_photo smallint NOT NULL)`,
+        values: null
+      }
+      client.query(query, (err, res) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log("Created photos table")
+        }
+      })
+    }
+  })
+};
 
 
 var getProductPG = function(req, res) {
@@ -71,6 +152,30 @@ var getProductPG = function(req, res) {
       })
     }
   })
+}
+
+
+getPhotosPG = function(productId) {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'fetch-photos',
+        text: 'SELECT * FROM photos WHERE product_id = $1',
+        values: [product_id]
+      }
+      client.query(query, (err, data) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log(data.rows[0])
+          res.send(data.rows[0])
+        }
+      })
+    }
+  })  
 }
 
 
@@ -165,48 +270,11 @@ const deleteProductRecordPG = (id) => {
 
 const async = require('async');
 const assert = require('assert');
-
 const cassandra = require('cassandra-driver');
-
 const Uuid = cassandra.types.Uuid;
 
+
 var client = new cassandra.Client({contactPoints : ['127.0.0.1'], localDataCenter: 'datacenter1', keyspace: 'students_details' });
-
-// var getProductCAS = function(req, res) {
-//   client.connect()
-//     .then(function () {
-//       return client.execute('SELECT * FROM system.local');
-//     })
-//     .then(function (result) {
-//       const row = result.rows[0];
-//       console.log('Obtained row: ', row);
-//       console.log('Shutting down');
-//       return client.shutdown();
-//     })
-//     .catch(function (err) {
-//       console.error('There was an error when connecting', err);
-//       return client.shutdown().then(() => { throw err; });
-//   });
-
-
-//   client.connect(function(err,result){
-//   var getAllUsers = 'SELECT * FROM students_details.student';
-//   console.log('Connected to cluster with %d host(s): %j', client.hosts.length, client.hosts.keys());
-//   console.log('Keyspaces: %j', Object.keys(client.metadata.keyspaces));
-//   console.log('cassandra connected')
-//   client.execute(getAllUsers,[], function(err, result){
-//     if(err){
-//       console.log("error, ", err)
-//     } else {
-//       console.log(result.rows[0])
-//       // console.log(res);
-//       // res.send(result.rows[0])
-//     }
-//   });
-// });
-// };
-
-
 
 var getProductCAS = function(productId) {
   client.connect(function(err,result){
@@ -222,8 +290,8 @@ var getProductCAS = function(productId) {
     });
   });
 }
+
 var record = [`${Uuid.random()}`,'3' ,'beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', ['asdf']]
-//console.log(record);
 
 
 var createDbCAS = function() {
@@ -308,32 +376,33 @@ var updateProductRecordCAS = function(id, newArrayRecord) {
         console.log("error, ", err)
       } else {
         console.log(result)
-        // console.log(res);
-        // res.send(result.rows[0])
       }
     });
   });   
 }
 
+//dropPhotosTablePG();
+createPhotosTablePG();
 
 
- updateProductRecordCAS(3, ['beepoooop498r7234987r6239487r5632948r5672ad;lfkj340r7134rUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', ['asdf']])
-  // createDbCAS();  //This properly creates the empty DB
- //saveProductRecordCAS(record);
-
+// updateProductRecordCAS(3, ['beepoooop498r7234987r6239487r5632948r5672ad;lfkj340r7134rUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', ['asdf']])
+//dropTablePg();
+//createTablePG();
 //getProductCAS(3);
 
 // deleteProductRecordCAS(3);
 
 
-
-
-// module.exports = {
-//   savePhotoRecord,
-//   getPhotosPG,
-//   getProductPG,
-// };
-
+module.exports = {
+  deleteProductRecordPG,
+  deleteProductRecordCAS,
+  updateProductRecordPG,
+  updateProductRecordCAS,
+  getProductPG,
+  getProductCAS,
+  saveProductRecordPG,
+  saveProductRecordCAS
+}
 
 
 

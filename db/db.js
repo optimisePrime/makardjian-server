@@ -38,22 +38,18 @@ const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/
 var dropProductsTablePG = function() {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
-    if (err) {
-      console.log(err);
-    } else {
-      const query = {
-        name: 'drop-product-table',
-        text: `DROP TABLE if exists products`,
-        values: null
-      }
-      client.query(query, (err, res) => {
-        if (err) {
-          console.log("err", err.stack)
-        } else {
-          console.log("Dropped products table")
-        }
-      })
+    const query = {
+      name: 'drop-product-table',
+      text: `DROP TABLE if exists products`,
+      values: null
     }
+    client.query(query, (err, res) => {
+      if (err) {
+        console.log("err", err.stack)
+      } else {
+        console.log("Dropped products table")
+      }
+    })
   })
 };
 
@@ -134,23 +130,18 @@ var getProductPG = function(req, res) {
   var id = req.params.productId;
   var pool = new Pool();
   pool.connect(function(err, client, done) {
-    if (err) {
-      console.log(err);
-    } else {
-      const query = {
-        name: 'fetch-product',
-        text: 'SELECT * FROM products WHERE id = $1',
-        values: [id]
-      }
-      client.query(query, (err, data) => {
-        if (err) {
-          console.log("err", err.stack)
-        } else {
-          console.log(data.rows[0])
-          res.send(data.rows[0])
-        }
-      })
+    const query = {
+      name: 'fetch-product',
+      text: 'SELECT * FROM products WHERE id = $1',
+      values: [id]
     }
+    client.query(query, (err, data) => {
+      if (err) {
+        console.log("Error running query:", err.stack)
+      } else {
+        res.send(data.rows[0])
+      }
+    })
   })
 }
 
@@ -182,25 +173,21 @@ getPhotosPG = function(productId) {
 const saveProductRecordPG = (arrayRecord) => {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
-    if (err) {
-      console.log(err);
-    } else {
-      const query = {
-        name: 'insert-product',
-        text: `INSERT INTO products 
-  (product_title, vendor_name, review_average, review_count, answered_questions,
-  list_price, discount, price, prime, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-        values: arrayRecord
-      }
-      client.query(query, (err, res) => {
-        if (err) {
-          console.log("err", err.stack)
-        } else {
-          console.log(res)
-          res.statusCode(500).send();
-        }
-      })
+    const query = {
+      name: 'insert-product',
+      text: `INSERT INTO products (product_title, vendor_name, 
+      review_average, review_count, answered_questions,
+      list_price, discount, price, prime, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      values: arrayRecord
     }
+    client.query(query, (err, res) => {
+      if (err) {
+        console.log("err", err.stack)
+      } else {
+        console.log(res)
+        res.statusCode(500).send();
+      }
+    })
   })
 };
 
@@ -214,18 +201,9 @@ const updateProductRecordPG = (id, newArrayRecord) => {
     } else {
       const query = {
         name: 'update-product',
-        text: `UPDATE products SET
-          product_title = $1,
-          vendor_name = $2 ,
-          review_average = $3,
-          review_count = $4,
-          answered_questions = $5,
-          list_price = $6,
-          discount = $7,
-          price = $8,
-          prime = $9,
-          description = $10
-          WHERE id = $11`,
+        text: `UPDATE products SET product_title = $1, vendor_name = $2 ,review_average = $3, 
+        review_count = $4, answered_questions = $5, list_price = $6, discount = $7, 
+        price = $8, prime = $9, description = $10 WHERE id = $11`,
         values: queryInputs
       }
       client.query(query, (err, res) => {
@@ -242,22 +220,18 @@ const updateProductRecordPG = (id, newArrayRecord) => {
 const deleteProductRecordPG = (id) => {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
-    if (err) {
-      console.log(err);
-    } else {
-      const query = {
-        name: 'delete-product',
-        text: `DELETE FROM products WHERE ID = $1`,
-        values: [id]
-      }
-      client.query(query, (err, res) => {
-        if (err) {
-          console.log("err", err.stack)
-        } else {
-          console.log("Deleted record")
-        }
-      })
+    const query = {
+      name: 'delete-product',
+      text: `DELETE FROM products WHERE ID = $1`,
+      values: [id]
     }
+    client.query(query, (err, res) => {
+      if (err) {
+        console.log("err", err.stack)
+      } else {
+        console.log("Deleted record")
+      }
+    })
   })
 }
 

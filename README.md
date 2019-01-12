@@ -1,43 +1,111 @@
-# Project Name
+### CRUD API's
+Create: 
+> app.post(/photos/:productId)
 
-> Project description
+> app.post(/products/:productId)
 
-## Related Projects
+> --> Sample Create Helper Function (Postgres)
 
-  - https://github.com/ChampsOfTheSun/reviews-service
-  - https://github.com/ChampsOfTheSun/vrtobar-service
-  - https://github.com/ChampsOfTheSun/jhods16-service
+const saveProductRecordPG = (arrayRecord) => {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    const query = {
+      name: 'insert-product',
+      text: `INSERT INTO products (product_title, vendor_name, 
+      review_average, review_count, answered_questions,
+      list_price, discount, price, prime, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      values: arrayRecord
+    }
+    client.query(query, (err, res) => {
+      if (err) {
+        console.log("err", err.stack)
+      } else {
+        console.log(res)
+        res.statusCode(500).send();
+      }
+    })
+  })
+};
 
-## Table of Contents
+Read: 
+ > app.get(/photos/:productId)
 
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
+ > app.get(/products/:productId)
 
-## SetUp Instructions
+> --> Sample Read Function (Postgres)
 
-> Navigate to db/db.js to configure the mySql username and password to match your local machine
-> From the root of the directory run the following commands:
-  > 'npm run start' (starts a nodemon server on port 3004)
-  > 'npm run schema' 
-    >Enter your own mySql password when prompted
-  > 'npm run seed-products' (seeds the products table)
-  > 'npm run seed-photos' (seeds the photos table)
+var getProductPG = function(req, res) {
+  var id = req.params.productId;
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    const query = {
+      name: 'fetch-product',
+      text: 'SELECT * FROM products WHERE id = $1',
+      values: [id]
+    }
+    client.query(query, (err, data) => {
+      if (err) {
+        console.log("Error running query:", err.stack)
+      } else {
+        res.send(data.rows[0])
+      }
+    })
+  })
+}
 
-## Requirements
+Update: 
+ > app.put(/photos/:productId)
 
-An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
+ > app.put(/products/:productId)
 
-- Node 6.13.0
-- etc
+> --> Sample Update Helper Function (Postgres)
 
-## Development
+const updateProductRecordPG = (id, newArrayRecord) => {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    var queryInputs = newArrayRecord.concat(id);
+    if (err) {
+      console.log(err);
+    } else {
+      const query = {
+        name: 'update-product',
+        text: `UPDATE products SET product_title = $1, vendor_name = $2 ,review_average = $3, 
+        review_count = $4, answered_questions = $5, list_price = $6, discount = $7, 
+        price = $8, prime = $9, description = $10 WHERE id = $11`,
+        values: queryInputs
+      }
+      client.query(query, (err, res) => {
+        if (err) {
+          console.log("err", err.stack)
+        } else {
+          console.log("Success updating product in Postgres")
+        }
+      })
+    }
+  })
+};
 
-### Installing Dependencies
+Delete:
+ > app.delete(/photos/:productId)
 
-From within the root directory:
+ > app.delete(/products/:productId)
 
-```sh
-npm install
-```
+> --> Sample Delete Helper Function
 
+const deleteProductRecordPG = (id) => {
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    const query = {
+      name: 'delete-product',
+      text: `DELETE FROM products WHERE ID = $1`,
+      values: [id]
+    }
+    client.query(query, (err, res) => {
+      if (err) {
+        console.log("err", err.stack)
+      } else {
+        console.log("Deleted record")
+      }
+    })
+  })
+}

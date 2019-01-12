@@ -22,15 +22,25 @@ app.get('/products/:productId', db.getProduct);
 //MAY DELETE THESE
 
 //POSTGRES
-app.post('/:productId', db.saveProductRecordPG)
-app.get('/:productId', db.getProductPG)
-app.put('/:productId', db.updateProductRecordPG)
-app.delete('/:productId', db.deleteProductRecordPG)
+app.post('/products/:productId', db.saveProductRecordPG)
+app.get('/products/:productId', db.getProductPG)
+app.put('/products/:productId', db.updateProductRecordPG)
+app.delete('/products/:productId', db.deleteProductRecordPG)
+
+app.post('/photos/:productId', db.saveProductRecordPG)
+app.get('/photos/:productId', db.getProductPG)
+app.put('/photos/:productId', db.updateProductRecordPG)
+app.delete('/photos/:productId', db.deleteProductRecordPG)
 
 
 //CASSANDRA
-app.post('/:productId', db.saveProductRecordCAS)
-app.get('/:productId', db.getProductCAS)
-app.put('/:productId', db.updateProductRecordCAS)
-app.delete('/:productId', db.deleteProductRecordCAS)
+app.post('/products/:productId', db.saveProductRecordCAS)
+app.get('/products/:productId', db.getProductCAS)
+app.put('/products/:productId', db.updateProductRecordCAS)
+app.delete('/products/:productId', db.deleteProductRecordCAS)
+
+app.post('/photos/:productId', db.saveProductRecordCAS)
+app.get('/photos/:productId', db.getProductCAS)
+app.put('/photos/:productId', db.updateProductRecordCAS)
+app.delete('/photos/:productId', db.deleteProductRecordCAS)
 

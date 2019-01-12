@@ -113,7 +113,7 @@ var cassandra_seed_file = path.join(__dirname, 'products_1_cas.csv');
 var cassandraOutput = [];
 
 var writeBatchCAS = function() {
-  for (var i = 0; i < 2; i++) {
+  for (var i = 0; i < 100000; i++) {
 
     var product_title = `"${faker.commerce.productName()}, ${faker.lorem.sentence().slice(0, -1)}"`;
     var vendor_name = `"${faker.company.companyName()}"`;
@@ -122,7 +122,7 @@ var writeBatchCAS = function() {
     var answered_questions = `${Math.round((Math.random() * 49) + 1)}`;
     var list_price = `${faker.commerce.price(15.00, 5000, 2, '$')}`;
     var discount = null;
-    var id = 9;
+    var id = i;
     var price = `${discountGenerator(list_price)}`;
     var prime = `${Math.round(Math.random())}`;
     var description = `"${descriptionGenerator()}"`;

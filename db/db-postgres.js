@@ -35,6 +35,8 @@ const { Pool, Client } = require('pg')
 
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/amazon';
 
+//DROP TABLES
+
 var dropProductsTablePG = function() {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
@@ -75,6 +77,7 @@ var dropPhotosTablePG = function() {
   })
 };
 
+//CREATE TABLES
 
 var createProductTablePG = function() {
   var pool = new Pool();
@@ -111,7 +114,7 @@ var createPhotosTablePG = function() {
       const query = {
         name: 'create-photos-table',
         text: `CREATE TABLE photos(photo_id serial PRIMARY KEY, main_url varchar(255) NOT NULL, zoom_url varchar(255) NOT NULL,
-        product_id integer, main_photo smallint NOT NULL)`,
+        product_id integer, main_photo smallint NOT NULL, FOREIGN KEY(product_id) REFERENCES products (id))`,
         values: null
       }
       client.query(query, (err, res) => {
@@ -124,6 +127,8 @@ var createPhotosTablePG = function() {
     }
   })
 };
+
+//READ TABLES
 
 
 var getProductPG = function(req, res) {
@@ -146,7 +151,7 @@ var getProductPG = function(req, res) {
 }
 
 
-getPhotosPG = function(productId) {
+var getPhotosPG = function(productId) {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     if (err) {
@@ -169,6 +174,7 @@ getPhotosPG = function(productId) {
   })  
 }
 
+//CREATE RECORDS FOR TABLES
 
 const saveProductRecordPG = (arrayRecord) => {
   var pool = new Pool();
@@ -190,6 +196,8 @@ const saveProductRecordPG = (arrayRecord) => {
     })
   })
 };
+
+//UPDATE TABLES
 
 
 const updateProductRecordPG = (id, newArrayRecord) => {
@@ -217,6 +225,10 @@ const updateProductRecordPG = (id, newArrayRecord) => {
   })
 };
 
+
+//DELETE TABLES
+
+
 const deleteProductRecordPG = (id) => {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
@@ -235,151 +247,13 @@ const deleteProductRecordPG = (id) => {
   })
 }
 
- // getProduct(64642266);
-
-//deleteProductRecord(64658011)
-
-
-///////////CASSANDRA
-
-const async = require('async');
-const assert = require('assert');
-const cassandra = require('cassandra-driver');
-const Uuid = cassandra.types.Uuid;
-
-
-var client = new cassandra.Client({contactPoints : ['127.0.0.1'], localDataCenter: 'datacenter1', keyspace: 'students_details' });
-
-var getProductCAS = function(productId) {
-  client.connect(function(err,result){
-    var query = 'SELECT * FROM amazon.products WHERE product_id = ?';
-    client.execute(query,[productId], {prepare: true}, function(err, result){
-      if(err){
-        console.log("error, ", err)
-      } else {
-        console.log(result.rows[0])
-        // console.log(res);
-        // res.send(result.rows[0])
-      }
-    });
-  });
-}
-
-var record = [`${Uuid.random()}`,'3' ,'beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http', 'yo'], ['bro', 'yes']]]
-
-
-var createDbCAS = function() {
-  const id = cassandra.types.Uuid.random();
-
-  async.series([
-    function connect(next) {
-      client.connect(next);
-    },
-    function createKeyspace(next) {
-      const query = "CREATE KEYSPACE IF NOT EXISTS amazon WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '3' }";
-      client.execute(query, next);
-    },
-    function deleteTable(next) {
-      const query = "DROP TABLE IF EXISTS amazon.products";
-      client.execute(query, next);
-    },
-    function createTable(next) {
-      const query = "CREATE TABLE IF NOT EXISTS amazon.products (product_id int, product_title text, vendor_name text, review_average decimal, review_count smallint, answered_questions int, list_price varchar, discount varchar, price varchar, prime smallint, description text, photos list<frozen <list<text>>>, PRIMARY KEY(product_id))";
-      client.execute(query, next);
-    }], function (err) {
-    if (err) {
-      console.error('There was an error', err.message, err.stack);
-    }
-    console.log('Shutting down');
-    client.shutdown(() => {
-      if (err) {
-        throw err;
-      }
-    });
-  });
-}
-
-var saveProductRecordCAS = function(arrayRecord) {
-  client.connect(function(err,result){
-    var query = 'INSERT INTO amazon.products (id, product_id, product_title, vendor_name, review_average, review_count, answered_questions, list_price, discount, price, prime, description, photos) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
-    client.execute(query,arrayRecord, {prepare: true}, function(err, result){
-      if(err){
-        console.log("error, ", err)
-      } else {
-        console.log(result)
-        // console.log(res);
-        // res.send(result.rows[0])
-      }
-    });
-  }); 
-}
-
-var deleteProductRecordCAS = function(productId) {
-  client.connect(function(err,result){
-    var query = 'DELETE from amazon.products where product_id = ?';
-    client.execute(query,[productId], {prepare: true}, function(err, result){
-      if(err){
-        console.log("error, ", err)
-      } else {
-        console.log(result)
-        // console.log(res);
-        // res.send(result.rows[0])
-      }
-    });
-  }); 
-}
-
-var updateProductRecordCAS = function(id, newArrayRecord) {
-  newArrayRecord.push(id)
-  client.connect(function(err,result){
-    var query = `UPDATE amazon.products SET
-          product_title = ?,
-          vendor_name = ?,
-          review_average = ?,
-          review_count = ?,
-          answered_questions = ?,
-          list_price = ?,
-          discount = ?,
-          price = ?,
-          prime = ?,
-          description = ?,
-          photos = ?
-          WHERE product_id = ?`
-    client.execute(query,newArrayRecord, {prepare: true}, function(err, result){
-      if(err){
-        console.log("error, ", err)
-      } else {
-        console.log(result)
-      }
-    });
-  });   
-}
-
-//dropPhotosTablePG();
-//createPhotosTablePG();
-
-
- //updateProductRecordCAS(3, ['beepoooop498r7234987r6239487r5632948r5672ad;lfkj340r7134rUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http', 'yo'], ['bro', 'yes']]]);
-//dropProductsTablePG();
-//createTablePG();
-//getProductCAS(3);
-
-
-createDbCAS();
-//saveProductRecordCAS(record);
-
-// deleteProductRecordCAS(3);
 
 
 module.exports = {
   deleteProductRecordPG,
-  deleteProductRecordCAS,
   updateProductRecordPG,
-  updateProductRecordCAS,
   getProductPG,
-  getProductCAS,
-  saveProductRecordPG,
-  saveProductRecordCAS
+  saveProductRecordPG
 }
 
 

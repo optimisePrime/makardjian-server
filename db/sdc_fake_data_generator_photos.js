@@ -101,7 +101,7 @@ var writeToDbPG = function(input) {
           stream.on('error', (error) => console.log("Error in copy command", error));
           stream.on('end', () => {
               client.release(true);
-              writeToDb(input + 1);
+              writeToDbPG(input + 1);
             })
           fileStream.pipe(stream)
       }
@@ -112,7 +112,7 @@ var writeToDbPG = function(input) {
 
 
 
-//writeToDb(0);
+writeToDbPG(0);
 
 module.exports = {
   products

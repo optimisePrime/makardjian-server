@@ -131,7 +131,7 @@ var writeBatchCAS = function() {
     //  build an array record to pass into the db.saveProductRecord function
     var record = [id, answered_questions, description, discount, list_price,  photos, price, prime, product_title, review_average, review_count, vendor_name ];
 
-    cassandraOutput.push(record.join());
+    cassandraOutput.push(record.join('|'));
   }
     fs.writeFileSync(cassandra_seed_file, cassandraOutput.join(os.EOL));
 }

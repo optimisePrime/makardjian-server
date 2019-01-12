@@ -4,7 +4,7 @@ var os = require('os');
 var faker = require('faker');
 var copyFrom = require('pg-copy-streams').from;
 var util = require('util');
-var productArray = require('./sdc_fake_data_generator_photos.js')
+var productArray = require('./cassandra_photos_all.js')
 
 
 
@@ -108,22 +108,12 @@ var descriptionGenerator = () => {
 
 ///////////CASSANDRA
 
-         ` product_title = ?,
-          vendor_name = ?,
-          review_average = ?,
-          review_count = ?,
-          answered_questions = ?,
-          list_price = ?,
-          discount = ?,
-          price = ?,
-          prime = ?,
-          description = ?,
-          photos = ?
-          WHERE product_id = ?`
+var cassandra_seed_file = path.join(__dirname, 'products_1_cas.csv');
+
+var cassandraOutput = [];
 
 var writeBatchCAS = function() {
-  clearFile();
-  for (var i = 0; i < 100000; i++) {
+  for (var i = 0; i < 2; i++) {
 
     var product_title = `"${faker.commerce.productName()}, ${faker.lorem.sentence().slice(0, -1)}"`;
     var vendor_name = `"${faker.company.companyName()}"`;
@@ -132,19 +122,28 @@ var writeBatchCAS = function() {
     var answered_questions = `${Math.round((Math.random() * 49) + 1)}`;
     var list_price = `${faker.commerce.price(15.00, 5000, 2, '$')}`;
     var discount = null;
-    var price = `${discountGenerator(listPrice)}`;
+    var id = 9;
+    var price = `${discountGenerator(list_price)}`;
     var prime = `${Math.round(Math.random())}`;
     var description = `"${descriptionGenerator()}"`;
-    var photos = [];
+    var photos = '['+`${productArray.products[Math.floor(Math.random() * productArray.products.length)]}`+']';
 
     //  build an array record to pass into the db.saveProductRecord function
-    var record = [productTitle, vendorName, reviewAverage, reviewCount,
-      answeredQuestions, listPrice, discount, price, prime, description];
+    var record = [id, answered_questions, description, discount, list_price,  photos, price, prime, product_title, review_average, review_count, vendor_name ];
 
-    output.push(record.join());
+    cassandraOutput.push(record.join());
   }
-    fs.writeFileSync(filename, output.join(os.EOL));
+    fs.writeFileSync(cassandra_seed_file, cassandraOutput.join(os.EOL));
 }
+
+var clearFileCAS = function() {
+  var data = '';
+  fs.writeFileSync(cassandra_seed_file, data);
+  console.log('Done clearing file')
+}
+
+clearFileCAS();
+writeBatchCAS();
 
 const async = require('async');
 const assert = require('assert');
@@ -171,7 +170,6 @@ var getProductCAS = function(productId) {
   });
 }
 
-console.log(productArray)
 
 // getProductCAS(3);
 

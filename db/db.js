@@ -310,7 +310,7 @@ var createDbCAS = function() {
       client.execute(query, next);
     },
     function createTable(next) {
-      const query = "CREATE TABLE IF NOT EXISTS amazon.products (id uuid, product_id int, product_title text, vendor_name text, review_average decimal, review_count smallint, answered_questions int, list_price varchar, discount varchar, price varchar, prime smallint, description text, photos list<frozen <list<text>>>, PRIMARY KEY(product_id))";
+      const query = "CREATE TABLE IF NOT EXISTS amazon.products (product_id int, product_title text, vendor_name text, review_average decimal, review_count smallint, answered_questions int, list_price varchar, discount varchar, price varchar, prime smallint, description text, photos list<frozen <list<text>>>, PRIMARY KEY(product_id))";
       client.execute(query, next);
     }], function (err) {
     if (err) {
@@ -391,8 +391,8 @@ var updateProductRecordCAS = function(id, newArrayRecord) {
 //getProductCAS(3);
 
 
-//createDbCAS();
-saveProductRecordCAS(record);
+createDbCAS();
+//saveProductRecordCAS(record);
 
 // deleteProductRecordCAS(3);
 

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const faker = require('faker');
+var path = require('path');
 var productArray = require('./cassandra_photos_all.js')
 
 
@@ -32,10 +33,20 @@ var descriptionGenerator = () => {
 };
 
 
+var clearFile = function() {
+  var data = '';
+  var filename = path.join(__dirname, 'file.csv');
+  fs.writeFileSync(filename, data);
+  console.log('Done clearing file')
+}
+
+clearFile();
+
+
 const printer = function () {
-  const fil = fs.createWriteStream('file.csv');
+  var fil = fs.createWriteStream('file.csv');
   let i = 0;
-  const MAX_LIM = 1000000;
+  const MAX_LIM = 10000000;
 
   const writer = function () {
     let result = true;
@@ -70,7 +81,6 @@ const printer = function () {
     if (i < MAX_LIM)
       fil.once('drain', writer);
   }
-
   return writer;
 }
 

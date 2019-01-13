@@ -54,70 +54,151 @@ products.push([
   ['https://images-na.ssl-images-amazon.com/images/I/71f0rd1qtWL._UX679_.jpg', 'https://images-na.ssl-images-amazon.com/images/I/71f0rd1qtWL._UL1000_.jpg'],
 ]);
 
-var output = [];
+// var output = [];
+
+// var clearFile = function() {
+//   var data = '';
+//   fs.writeFileSync(filename, data);
+//   console.log('Done clearing file')
+// }
+
+// clearFile();
+
+// const photoGenerator = (productId) => {
+//   const randomIndex = Math.floor(Math.random() * products.length);
+//   const randomProduct = products[randomIndex]; 
+
+//   for (let j = 0; j < randomProduct.length; j++) {
+//     if (j === 0) {
+//       var result = [randomProduct[j][0], randomProduct[j][1], productId, 1];
+//     } else {
+//       var result = [randomProduct[j][0], randomProduct[j][1], productId, 0];
+//     }
+//     output.push(result.join());
+//   }
+// };
+
+
+// for (let i = 1; i < 50; i++) {
+//   photoGenerator(i);
+// }
+
+// fs.writeFileSync(filename, output.join(os.EOL));
+
+
+// var writeToDbPG = function(input) {
+//     console.log("Currently on loop #", input)
+//     if (input < 250) {
+//       var pool = new Pool()
+//       pool.connect(function(err, client, done) {
+//         if (err) {
+//           console.log('err connecting', err)
+//         } else {
+//           var stream = client.query(copyFrom('COPY photos (main_url, zoom_url, product_id, main_photo) FROM STDIN CSV'));
+//           console.log('in stream')
+//           var fileStream = fs.createReadStream('photos1.csv');
+//           fileStream.on('error', (error) => console.log("Error reading file", error));
+//           stream.on('error', (error) => console.log("Error in copy command", error));
+//           stream.on('end', () => {
+//               client.release(true);
+//               writeToDbPG(input + 1);
+//             })
+//           fileStream.pipe(stream)
+//       }
+//     })
+//       pool.end();
+//     }
+// }
+
+
+
+// writeToDbPG(0);
+
+// module.exports = {
+//   products
+// }
+
+
+
+// const fs = require('fs');
+// const faker = require('faker');
+// var path = require('path');
+// var productArray = require('./cassandra_photos_all.js')
+
+
+// var discountGenerator = (stringPrice) => {
+//   let price = Number(stringPrice.slice(1));
+//   var randomNum = Math.floor(Math.random() * 10) + 1;
+//   var potentialDiscounts = [0.1, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7];
+//   var randomIndex = Math.floor(Math.random() * 8);
+
+//   if (randomNum <= 7) {
+//     discount = potentialDiscounts[randomIndex];
+//     var dollarsOff = price * discount;
+//     price -= dollarsOff;
+//     discount = ((discount * 100).toString() + '%');
+//     return ('$' + price.toFixed(2).toString());
+//   }
+//   return stringPrice;
+// };
+
+// var reviewAverageGenerator = () => {
+//   var possibleScores = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+//   var randomScore = Math.floor(Math.random() * 9);
+//   var result = possibleScores[randomScore];
+//   return result;
+// };
+
+// var descriptionGenerator = () => {
+//   var randomNum = Math.floor(Math.random() * 8) + 1;
+//   return [faker.lorem.paragraph()];
+// };
+
 
 var clearFile = function() {
   var data = '';
+  var filename = path.join(__dirname, 'photos_pg.csv');
   fs.writeFileSync(filename, data);
   console.log('Done clearing file')
 }
 
 clearFile();
 
-const photoGenerator = (productId) => {
-  const randomIndex = Math.floor(Math.random() * products.length);
-  const randomProduct = products[randomIndex]; 
 
-  for (let j = 0; j < randomProduct.length; j++) {
-    if (j === 0) {
-      var result = [randomProduct[j][0], randomProduct[j][1], productId, 1];
-    } else {
-      var result = [randomProduct[j][0], randomProduct[j][1], productId, 0];
-    }
-    output.push(result.join());
-  }
-};
+const printer = function () {
 
+  var fil = fs.createWriteStream('photos_pg.csv');
 
-for (let i = 1; i < 50000; i++) {
-  photoGenerator(i);
-}
-
-fs.writeFileSync(filename, output.join(os.EOL));
-
-
-var writeToDbPG = function(input) {
-    console.log("Currently on loop #", input)
-    if (input < 250) {
-      var pool = new Pool()
-      pool.connect(function(err, client, done) {
-        if (err) {
-          console.log('err connecting', err)
-        } else {
-          var stream = client.query(copyFrom('COPY photos (main_url, zoom_url, product_id, main_photo) FROM STDIN CSV'));
-          console.log('in stream')
-          var fileStream = fs.createReadStream('photos1.csv');
-          fileStream.on('error', (error) => console.log("Error reading file", error));
-          stream.on('error', (error) => console.log("Error in copy command", error));
-          stream.on('end', () => {
-              client.release(true);
-              writeToDbPG(input + 1);
-            })
-          fileStream.pipe(stream)
+  var photoGenerator = (productId) => {
+    var randomIndex = Math.floor(Math.random() * products.length);
+    var randomProduct = products[randomIndex]; 
+    for (let j = 0; j < randomProduct.length; j++) {
+      if (j === 0) {
+        result = fil.write(`${randomProduct[j][0]},${randomProduct[j][1]},${productId},${1}\n`);
+      } else {
+        result = fil.write(`${randomProduct[j][0]},${randomProduct[j][1]},${productId},${0}\n`);
       }
-    })
-      pool.end();
     }
+  };
+
+  let i = 9000000;
+
+  const MAX_LIM = 10000000;
+
+  const writer = function () {
+    let result = true;
+    while (i < MAX_LIM && result) {
+      photoGenerator(i);
+      i += 1;
+    }
+    if (i < MAX_LIM)
+      fil.once('drain', writer);
+  }
+  return writer;
 }
 
-
-
-writeToDbPG(0);
-
-module.exports = {
-  products
-}
-
+const printty = printer();
+printty();
 
 
 

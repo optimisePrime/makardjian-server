@@ -248,6 +248,8 @@ const deleteProductRecordPG = (id) => {
 }
 
 
+dropPhotosTablePG();
+
 
 module.exports = {
   deleteProductRecordPG,

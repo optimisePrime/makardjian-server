@@ -86,29 +86,30 @@ products.push([
 // fs.writeFileSync(filename, output.join(os.EOL));
 
 
-// var writeToDbPG = function(input) {
-//     console.log("Currently on loop #", input)
-//     if (input < 250) {
-//       var pool = new Pool()
-//       pool.connect(function(err, client, done) {
-//         if (err) {
-//           console.log('err connecting', err)
-//         } else {
-//           var stream = client.query(copyFrom('COPY photos (main_url, zoom_url, product_id, main_photo) FROM STDIN CSV'));
-//           console.log('in stream')
-//           var fileStream = fs.createReadStream('photos1.csv');
-//           fileStream.on('error', (error) => console.log("Error reading file", error));
-//           stream.on('error', (error) => console.log("Error in copy command", error));
-//           stream.on('end', () => {
-//               client.release(true);
-//               writeToDbPG(input + 1);
-//             })
-//           fileStream.pipe(stream)
-//       }
-//     })
-//       pool.end();
-//     }
-// }
+var writeToDbPG = function(input) {
+    console.log("Currently on loop #", input);
+
+    if (input < 250) {
+      var pool = new Pool()
+      pool.connect(function(err, client, done) {
+        if (err) {
+          console.log('err connecting', err)
+        } else {
+          var stream = client.query(copyFrom('COPY photos (main_url, zoom_url, product_id, main_photo) FROM STDIN CSV'));
+          console.log('in stream')
+          var fileStream = fs.createReadStream('photos1.csv');
+          fileStream.on('error', (error) => console.log("Error reading file", error));
+          stream.on('error', (error) => console.log("Error in copy command", error));
+          stream.on('end', () => {
+              client.release(true);
+              writeToDbPG(input + 1);
+            })
+          fileStream.pipe(stream)
+      }
+    })
+      pool.end();
+    }
+}
 
 
 

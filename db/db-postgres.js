@@ -128,6 +128,8 @@ var createPhotosTablePG = function() {
   })
 };
 
+
+
 //READ TABLES
 
 
@@ -176,34 +178,63 @@ var getPhotosPG = function(productId) {
 
 //CREATE RECORDS FOR TABLES
 
-const saveProductRecordPG = (arrayRecord) => {
+  //PRODUCTS
+const saveProductRecordPG = (req, res) => {
+  const newArrayRecord = ['Sample product', 'Acme Co.',3,123,9,'$13.95',1,'$13.95',1,'A fun game for the whole family'];
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     const query = {
       name: 'insert-product',
+      // id |product_title |vendor_name| review_average | review_count | answered_questions | list_price | discount |  price  | prime | description
       text: `INSERT INTO products (product_title, vendor_name, 
       review_average, review_count, answered_questions,
       list_price, discount, price, prime, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-      values: arrayRecord
+      values: newArrayRecord
     }
     client.query(query, (err, res) => {
       if (err) {
         console.log("err", err.stack)
       } else {
-        console.log(res)
         res.statusCode(500).send();
       }
     })
   })
 };
 
-//UPDATE TABLES
-
-
-const updateProductRecordPG = (id, newArrayRecord) => {
+  //PHOTOS
+  //SAMPLE QUERY: INSERT INTO photos (photo_id, main_url, zoom_url, product_id, main_photo ) VALUES ('http://wwww.google.com', 'http://www.google.com',9136000,1);
+const saveProductRecordPG = (req, res) => {
+  const newArrayRecord = ['http://wwww.google.com', 'http://www.google.com',9136000,1];
   var pool = new Pool();
   pool.connect(function(err, client, done) {
-    var queryInputs = newArrayRecord.concat(id);
+    const query = {
+      name: 'insert-product',
+      // id |product_title |vendor_name| review_average | review_count | answered_questions | list_price | discount |  price  | prime | description
+      text: `INSERT INTO photos ( photo_id, main_url, zoom_url, product_id, main_photo ) VALUES ($1, $2, $3, $4)`,
+      values: newArrayRecord
+    }
+    client.query(query, (err, res) => {
+      if (err) {
+        console.log("err", err.stack)
+      } else {
+        res.statusCode(500).send();
+      }
+    })
+  })
+};
+
+
+//UPDATE TABLES
+
+//SAMPLE QUERY: `UPDATE products SET product_title = 'Sample product', vendor_name = 'Acme Co.',review_average = 3, 
+ //       review_count = 123, answered_questions = 12, list_price = '$12.33', discount = 0, 
+ //       price = '$12.33', prime = 0, description = 'A terrible game' WHERE id = 9900053`
+const updateProductRecordPG = (req, res) => {
+  const updatedProductRecord = ['Sample product', 'Acme Co.',3,123,9,'$13.95',0,'$13.95',1,'A fun game for the whole family'];
+  const productId = req.params.productId;
+  var pool = new Pool();
+  pool.connect(function(err, client, done) {
+    var queryInputs = newArrayRecord.unshift(id);
     if (err) {
       console.log(err);
     } else {
@@ -227,29 +258,36 @@ const updateProductRecordPG = (id, newArrayRecord) => {
 
 
 //DELETE TABLES
-
-
+  //SAMPLE QUERY: DELETE FROM photos where product_id = 9123456;
+  //DELETE from products where id = 9123456;
 const deleteProductRecordPG = (id) => {
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     const query = {
-      name: 'delete-product',
-      text: `DELETE FROM products WHERE ID = $1`,
+      name: 'delete-photo',
+      text: `DELETE FROM photos WHERE product_id = $1`,
       values: [id]
     }
     client.query(query, (err, res) => {
       if (err) {
         console.log("err", err.stack)
       } else {
-        console.log("Deleted record")
+        const query = {
+        name: 'delete-product',
+        text: `DELETE FROM products WHERE id = $1`,
+        values: [id]
+      } 
+        client.query(query, (err, res) => {
+          if (err) {
+            console.log("err", err.stack)
+          } else {
+            console.log("Success deleting product and photos")
+          }
+        })
       }
     })
   })
 }
-
-
-dropPhotosTablePG();
-
 
 module.exports = {
   deleteProductRecordPG,

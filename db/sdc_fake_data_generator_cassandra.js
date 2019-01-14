@@ -74,6 +74,9 @@ const printer = function () {
       // write has resulted in buffered data, crossing the highWaterMark.
       // So, we have to increment the count.
       i += 1;
+
+
+
     }
 
     // Add an event listener if the last write was not
@@ -86,3 +89,8 @@ const printer = function () {
 
 const printty = printer();
 printty();
+
+console.log('done');
+
+
+

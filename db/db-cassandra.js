@@ -88,10 +88,10 @@ var getProductCAS = function(productId) {
 }
 
 
-//UPDATE TABLE
+//CREATE NEW RECORD
 
-var record = [`${Uuid.random()}`,'3' ,'beeUnbranded Plastic Chicken, Facilis totam porro ipsum eveniet explicabo rerum','Abernathy LLC','10','2484','12','$4300.00','50%','$2150.00','0','Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http://www.google.com', 'http://www.'], ['bro', 'yes']]]
 
+var record = [10000001, 'beeUnbranded Plastic Chicken','Abernathy LLC',10,2484,12,'$4300.00','50%','$2150.00',0,'Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http://www.google.com', 'http://www.microsoft.com'], ['http://www.amazon.com', 'http://facebook.com']]]
 var saveProductRecordCAS = function(arrayRecord) {
   client.connect(function(err,result){
     var query = 'INSERT INTO amazon.products (product_id, product_title, vendor_name, review_average, review_count, answered_questions, list_price, discount, price, prime, description, photos) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
@@ -109,6 +109,7 @@ var saveProductRecordCAS = function(arrayRecord) {
 
 //DELETE RECORD FROM TABLE
 
+//SAMPLE QUERY: DELETE from amazon.products where product_id = 9123456;
 var deleteProductRecordCAS = function(productId) {
   client.connect(function(err,result){
     var query = 'DELETE from amazon.products where product_id = ?';
@@ -125,9 +126,12 @@ var deleteProductRecordCAS = function(productId) {
 }
 
 //UPDATE RECORD IN TABLE
-
-var updateProductRecordCAS = function(id, newArrayRecord) {
-  newArrayRecord.push(id)
+//SAMPLE QUERY: UPDATE amazon.products SET product_title = 'Plastic chicken game', vendor_name = 'Acme Co.', review_average = 3,
+  //  review_count = 123, answered_questions = 12, list_price = '$12.00', discount = '0',  price = '$12.00', prime = 0,
+  //  description = 'A really bad game', photos = [['http://www.google.com', 'http://www.microsoft.com'], ['http://www.amazon.com', 'http://facebook.com']] WHERE product_id = 9900000;
+var updateProductRecordCAS = function(req, res) {
+  var newArrayRecord = ['beeUnbranded Plastic Chicken','Abernathy LLC',10,2484,12,'$4300.00','50%','$2150.00',0,'Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http://www.google.com', 'http://www.microsoft.com'], ['http://www.amazon.com', 'http://facebook.com']]]
+  newArrayRecord.unshift(id)
   client.connect(function(err,result){
     var query = `UPDATE amazon.products SET product_title = ?, vendor_name = ?, review_average = ?,
     review_count = ?, answered_questions = ?, list_price = ?, discount = ?,  price = ?, prime = ?,

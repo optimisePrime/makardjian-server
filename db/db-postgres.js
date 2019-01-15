@@ -180,6 +180,7 @@ var getPhotosPG = function(productId) {
 
   //PRODUCTS
 const saveProductRecordPG = (req, res) => {
+  console.log(req.body);
   const newArrayRecord = ['Sample product', 'Acme Co.',3,123,9,'$13.95',1,'$13.95',1,'A fun game for the whole family'];
   var pool = new Pool();
   pool.connect(function(err, client, done) {
@@ -188,22 +189,24 @@ const saveProductRecordPG = (req, res) => {
       // id |product_title |vendor_name| review_average | review_count | answered_questions | list_price | discount |  price  | prime | description
       text: `INSERT INTO products (product_title, vendor_name, 
       review_average, review_count, answered_questions,
-      list_price, discount, price, prime, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      list_price, discount, price, prime, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`,
       values: newArrayRecord
     }
     client.query(query, (err, res) => {
       if (err) {
         console.log("err", err.stack)
       } else {
-        res.statusCode(500).send();
+        console.log("Inserted item, the product ID is: ", res.rows[0].id)
       }
     })
   })
+  res.send();
 };
 
   //PHOTOS
   //SAMPLE QUERY: INSERT INTO photos (photo_id, main_url, zoom_url, product_id, main_photo ) VALUES ('http://wwww.google.com', 'http://www.google.com',9136000,1);
-const saveProductRecordPG = (req, res) => {
+const savePhotoRecordPG = (req, res) => {
+  console.log(req.body);
   const newArrayRecord = ['http://wwww.google.com', 'http://www.google.com',9136000,1];
   var pool = new Pool();
   pool.connect(function(err, client, done) {

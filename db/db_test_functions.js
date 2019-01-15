@@ -1,6 +1,8 @@
 var cassandraFunctions = require('./db-cassandra.js');
 var postgresFunctions = require('./db_postgres.js');
 
+var performance = require('performance-now');
+
 
 
 //CASSANDRA

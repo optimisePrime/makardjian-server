@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const db = require('./../db/db-postgres.js');
-const cas = require('./../db/db-cassandra.js')
+//const cas = require('./../db/db-cassandra.js')
 const cors = require('cors');
 
 //  ///////////////////////////////////

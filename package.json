@@ -32,6 +32,7 @@
     "mysql": "^2.16.0",
     "node-sass": "^4.11.0",
     "performance": "^1.1.1",
+    "performance-now": "^2.1.0",
     "pg": "^7.7.1",
     "pg-copy-streams": "^1.2.0",
     "react": "^16.6.3",

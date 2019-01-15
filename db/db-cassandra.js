@@ -32,7 +32,6 @@ const getPhotos = (req, res) => {
 const async = require('async');
 const assert = require('assert');
 const cassandra = require('cassandra-driver');
-const Uuid = cassandra.types.Uuid;
 
 
 var client = new cassandra.Client({contactPoints : ['127.0.0.1'], localDataCenter: 'datacenter1', keyspace: 'students_details' });

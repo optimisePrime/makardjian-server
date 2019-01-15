@@ -24,7 +24,7 @@ const sampleInsertPG = [];
 const sampleUpdatePG = [];
 app.post('/products/:productId', db.saveProductRecordPG)
 app.get('/products/:productId', db.getProductPG)
-// app.put('/products/:productId', db.updateProductRecordPG)
+app.put('/products/:productId', db.updateProductRecordPG)
 // app.delete('/products/:productId', db.deleteProductRecordPG)
 
 // app.post('/photos/:productId', db.saveProductRecordPG)

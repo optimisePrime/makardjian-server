@@ -353,8 +353,8 @@ var deleteProductCAS = function() {
 //getProductPG();
 //updateProductPG();
 //insertProductPG();
-//getProductCAS();
-updateProductCAS();
+getProductCAS();
+//updateProductCAS();
 //insertProductCAS();
 //deleteProductPG();
 //deleteProductCAS();

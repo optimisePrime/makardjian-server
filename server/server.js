@@ -7,6 +7,14 @@ const cors = require('cors');
 //  ///////////////////////////////////
 const app = express();
 
+var bodyParser = require('body-parser')
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+
+
 app.use('/:productId', express.static(path.join(__dirname, './../client/dist/')));
 app.use(express.static(path.join(__dirname, './../client/dist/')));
 app.use(cors());
@@ -22,7 +30,10 @@ app.listen(PORT);
 
 const sampleInsertPG = [];
 const sampleUpdatePG = [];
-app.post('/products/:productId', db.saveProductRecordPG)
+app.post('/products/:productId', function (req, res) {
+	console.log(req.body)
+	db.saveProductRecordPG(req, res);
+})
 app.get('/products/:productId', db.getProductPG)
 app.put('/products/:productId', db.updateProductRecordPG)
 // app.delete('/products/:productId', db.deleteProductRecordPG)

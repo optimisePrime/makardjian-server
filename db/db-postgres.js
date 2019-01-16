@@ -200,12 +200,11 @@ const saveProductRecordPG = (req, res) => {
         console.log("err", err.stack);
         res.sendStatus(500);
       } else {
-        console.log("Inserted item, the product ID is: ", res.rows[0].id);
+        console.log("Inserted item, the product ID is: ", data.rows[0].id);
         res.sendStatus(200);
       }
     })
   })
-  res.send();
 };
 
   //PHOTOS
@@ -270,7 +269,8 @@ const updateProductRecordPG = (req, res) => {
 //DELETE TABLES
   //SAMPLE QUERY: DELETE FROM photos where product_id = 9123456;
   //DELETE from products where id = 9123456;
-const deleteProductRecordPG = (id) => {
+const deleteProductRecordPG = (req, res) => {
+  const id = req.params.productId;
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     const query = {

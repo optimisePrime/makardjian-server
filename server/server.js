@@ -42,7 +42,10 @@ app.get('/products/:productId', function (req, res) {
 app.put('/products/:productId', function (req, res) {
 	db.updateProductRecordPG(req, res);
 });
-// app.delete('/products/:productId', db.deleteProductRecordPG)
+
+app.delete('/products/:productId', function(req, res) {
+	db.deleteProductRecordPG(req, res);
+});
 
 // app.post('/photos/:productId', db.saveProductRecordPG)
 // app.get('/photos/:productId', db.getProductPG)

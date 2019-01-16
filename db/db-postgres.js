@@ -19,7 +19,7 @@ const getPhotos = (req, res) => {
   connection.query(query, (err, photos) => {
     if (err) {
       console.log(err);
-      res.statusCode(500).send();
+      res.sendStatus(500).send();
     } else {
       res.send(photos);
     }
@@ -144,7 +144,8 @@ var getProductPG = function(req, res) {
     }
     client.query(query, (err, data) => {
       if (err) {
-        console.log("Error running query:", err.stack)
+        console.log("Error running query:", err.stack);
+        res.sendStatus(500);
       } else {
         res.send(data.rows[0])
       }
@@ -166,7 +167,8 @@ var getPhotosPG = function(productId) {
       }
       client.query(query, (err, data) => {
         if (err) {
-          console.log("err", err.stack)
+          console.log("err", err.stack);
+          res.sendStatus(500);
         } else {
           console.log(data.rows[0])
           res.send(data.rows[0])
@@ -180,8 +182,7 @@ var getPhotosPG = function(productId) {
 
   //PRODUCTS
 const saveProductRecordPG = (req, res) => {
-  console.log(req.body);
-  var payload = req.body;
+  const payload = req.body;
   //const newArrayRecord = ['Sample product', 'Acme Co.',3,123,9,'$13.95',1,'$13.95',1,'A fun game for the whole family'];
   const newArrayRecord = [payload.product_title, payload.vendor_name, payload.review_average, payload.review_count, payload.answered_questions, payload.list_price, payload.discount, payload.price, payload.prime, payload.description]
   var pool = new Pool();
@@ -194,11 +195,13 @@ const saveProductRecordPG = (req, res) => {
       list_price, discount, price, prime, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`,
       values: newArrayRecord
     }
-    client.query(query, (err, res) => {
+    client.query(query, (err, data) => {
       if (err) {
-        console.log("err", err.stack)
+        console.log("err", err.stack);
+        res.sendStatus(500);
       } else {
-        console.log("Inserted item, the product ID is: ", res.rows[0].id)
+        console.log("Inserted item, the product ID is: ", res.rows[0].id);
+        res.sendStatus(200);
       }
     })
   })
@@ -208,8 +211,7 @@ const saveProductRecordPG = (req, res) => {
   //PHOTOS
   //SAMPLE QUERY: INSERT INTO photos (photo_id, main_url, zoom_url, product_id, main_photo ) VALUES ('http://wwww.google.com', 'http://www.google.com',9136000,1);
 const savePhotoRecordPG = (req, res) => {
-  console.log(req.body);
-  const newArrayRecord = ['http://wwww.google.com', 'http://www.google.com',9136000,1];
+  const newArrayRecord = [payload.product_title, payload.vendor_name, payload.review_average, payload.review_count, payload.answered_questions, payload.list_price, payload.discount, payload.price, payload.prime, payload.description];
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     const query = {
@@ -218,11 +220,12 @@ const savePhotoRecordPG = (req, res) => {
       text: `INSERT INTO photos ( photo_id, main_url, zoom_url, product_id, main_photo ) VALUES ($1, $2, $3, $4)`,
       values: newArrayRecord
     }
-    client.query(query, (err, res) => {
+    client.query(query, (err, data) => {
       if (err) {
-        console.log("err", err.stack)
+        console.log("err", err.stack);
+        res.sendStatus(500);
       } else {
-        res.statusCode(500).send();
+        res.sendStatus(200);
       }
     })
   })
@@ -235,11 +238,11 @@ const savePhotoRecordPG = (req, res) => {
  //       review_count = 123, answered_questions = 12, list_price = '$12.33', discount = 0, 
  //       price = '$12.33', prime = 0, description = 'A terrible game' WHERE id = 9900053`
 const updateProductRecordPG = (req, res) => {
-  const updatedProductRecord = ['Sample product', 'Acme Co.',3,123,9,'$13.95',0,'$13.95',1,'A fun game for the whole family'];
+  const payload = req.body;
   const productId = req.params.productId;
+  const updatedProductRecord = [payload.product_title, payload.vendor_name, payload.review_average, payload.review_count, payload.answered_questions, payload.list_price, payload.discount, payload.price, payload.prime, payload.description, productId]
   var pool = new Pool();
   pool.connect(function(err, client, done) {
-    var queryInputs = newArrayRecord.unshift(id);
     if (err) {
       console.log(err);
     } else {
@@ -248,13 +251,15 @@ const updateProductRecordPG = (req, res) => {
         text: `UPDATE products SET product_title = $1, vendor_name = $2 ,review_average = $3, 
         review_count = $4, answered_questions = $5, list_price = $6, discount = $7, 
         price = $8, prime = $9, description = $10 WHERE id = $11`,
-        values: queryInputs
+        values: updatedProductRecord
       }
-      client.query(query, (err, res) => {
+      client.query(query, (err, data) => {
         if (err) {
-          console.log("err", err.stack)
+          console.log("err", err.stack);
+          res.sendStatus(500);
         } else {
-          console.log("Success updating product in Postgres")
+          console.log("Success updating product in Postgres");
+          res.sendStatus(200);
         }
       })
     }
@@ -273,7 +278,7 @@ const deleteProductRecordPG = (id) => {
       text: `DELETE FROM photos WHERE product_id = $1`,
       values: [id]
     }
-    client.query(query, (err, res) => {
+    client.query(query, (err, data) => {
       if (err) {
         console.log("err", err.stack)
       } else {
@@ -282,11 +287,13 @@ const deleteProductRecordPG = (id) => {
         text: `DELETE FROM products WHERE id = $1`,
         values: [id]
       } 
-        client.query(query, (err, res) => {
+        client.query(query, (err, data) => {
           if (err) {
-            console.log("err", err.stack)
+            console.log("err", err.stack);
+            res.sendStatus(500);
           } else {
-            console.log("Success deleting product and photos")
+            console.log("Success deleting product and photos");
+            res.sendStatus(200);
           }
         })
       }

@@ -39,7 +39,9 @@ app.get('/products/:productId', function (req, res) {
 	db.getProductPG(req, res);
 });
 
-app.put('/products/:productId', db.updateProductRecordPG)
+app.put('/products/:productId', function (req, res) {
+	db.updateProductRecordPG(req, res);
+});
 // app.delete('/products/:productId', db.deleteProductRecordPG)
 
 // app.post('/photos/:productId', db.saveProductRecordPG)

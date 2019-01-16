@@ -181,7 +181,9 @@ var getPhotosPG = function(productId) {
   //PRODUCTS
 const saveProductRecordPG = (req, res) => {
   console.log(req.body);
-  const newArrayRecord = ['Sample product', 'Acme Co.',3,123,9,'$13.95',1,'$13.95',1,'A fun game for the whole family'];
+  var payload = req.body;
+  //const newArrayRecord = ['Sample product', 'Acme Co.',3,123,9,'$13.95',1,'$13.95',1,'A fun game for the whole family'];
+  const newArrayRecord = [payload.product_title, payload.vendor_name, payload.review_average, payload.review_count, payload.answered_questions, payload.list_price, payload.discount, payload.price, payload.prime, payload.description]
   var pool = new Pool();
   pool.connect(function(err, client, done) {
     const query = {

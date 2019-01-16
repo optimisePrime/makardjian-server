@@ -30,11 +30,15 @@ app.listen(PORT);
 
 const sampleInsertPG = [];
 const sampleUpdatePG = [];
+
 app.post('/products/:productId', function (req, res) {
-	console.log(req.body)
 	db.saveProductRecordPG(req, res);
 })
-app.get('/products/:productId', db.getProductPG)
+
+app.get('/products/:productId', function (req, res) {
+	db.getProductPG(req, res);
+});
+
 app.put('/products/:productId', db.updateProductRecordPG)
 // app.delete('/products/:productId', db.deleteProductRecordPG)
 

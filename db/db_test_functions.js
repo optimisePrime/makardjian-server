@@ -17,7 +17,7 @@ var getProductPG = function() {
       let num = Math.floor(Math.random() * 10000000);
       var query = {
         name: 'fetch-product',
-        text: 'SELECT * FROM products WHERE id = $1',
+        text: 'SELECT * FROM products left join photos on products.id = photos.product_id WHERE id = $1',
         values: [num]
       }
       if (n < 10000) {
@@ -221,7 +221,7 @@ var getProductCAS = function() {
         })
       }
       if (n === 10000) {
-        console.log(`CASSANDRA: Tested 10000 SELECT queries, average time: $${(cumlative_time / 10000).toFixed(3)}`);
+        console.log(`CASSANDRA: Tested 10000 SELECT queries, average time: ${(cumlative_time / 10000).toFixed(3)}`);
       }
     }
   recursivelyTestSelect(0);
@@ -350,10 +350,10 @@ var deleteProductCAS = function() {
 
 
 //RUN
-//getProductPG();
+getProductPG();
 //updateProductPG();
 //insertProductPG();
-getProductCAS();
+//getProductCAS();
 //updateProductCAS();
 //insertProductCAS();
 //deleteProductPG();

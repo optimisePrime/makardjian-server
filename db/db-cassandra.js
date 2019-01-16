@@ -72,15 +72,17 @@ var createDbCAS = function() {
 //READ TABLE
 
 //EXAMPLE: getProductCAS(3);
-var getProductCAS = function(productId) {
+
+var getProductCAS = function(req, res) {
+  var id = req.params.productId;
   client.connect(function(err,result){
     var query = 'SELECT * FROM amazon.products WHERE product_id = ?';
-    client.execute(query,[productId], {prepare: true}, function(err, result){
+    client.execute(query,[id], {prepare: true}, function(err, data){
       if(err){
         console.log("error, ", err)
       } else {
-        console.log(result.rows[0])
-        // res.send(result.rows[0])
+        console.log(data.rows[0])
+        res.send(data.rows[0])
       }
     });
   });
@@ -90,8 +92,8 @@ var getProductCAS = function(productId) {
 //CREATE NEW RECORD
 
 
-var record = [10000001, 'beeUnbranded Plastic Chicken','Abernathy LLC',10,2484,12,'$4300.00','50%','$2150.00',0,'Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http://www.google.com', 'http://www.microsoft.com'], ['http://www.amazon.com', 'http://facebook.com']]]
-var saveProductRecordCAS = function(arrayRecord) {
+//var record = [10000001, 'beeUnbranded Plastic Chicken','Abernathy LLC',10,2484,12,'$4300.00','50%','$2150.00',0,'Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http://www.google.com', 'http://www.microsoft.com'], ['http://www.amazon.com', 'http://facebook.com']]]
+var saveProductRecordCAS = function(req, res) {
   client.connect(function(err,result){
     var query = 'INSERT INTO amazon.products (product_id, product_title, vendor_name, review_average, review_count, answered_questions, list_price, discount, price, prime, description, photos) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
     client.execute(query,arrayRecord, {prepare: true}, function(err, result){

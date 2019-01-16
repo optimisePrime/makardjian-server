@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const db = require('./../db/db-postgres.js');
-//const cas = require('./../db/db-cassandra.js')
+const cas = require('./../db/db-cassandra.js')
 const cors = require('cors');
 
 //  ///////////////////////////////////
@@ -32,11 +32,13 @@ const sampleInsertPG = [];
 const sampleUpdatePG = [];
 
 app.post('/products/:productId', function (req, res) {
-	db.saveProductRecordPG(req, res);
+	//db.saveProductRecordPG(req, res);
+	cas.saveProductRecordCAS(req, res);
 })
 
 app.get('/products/:productId', function (req, res) {
-	db.getProductPG(req, res);
+	//db.getProductPG(req, res);
+	cas.getProductCAS(req, res);
 });
 
 app.put('/products/:productId', function (req, res) {

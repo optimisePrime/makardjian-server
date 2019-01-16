@@ -80,6 +80,7 @@ var getProductCAS = function(req, res) {
     client.execute(query,[id], {prepare: true}, function(err, data){
       if(err){
         console.log("error, ", err)
+        res.sendStatus(500);
       } else {
         console.log(data.rows[0])
         res.send(data.rows[0])
@@ -94,6 +95,7 @@ var getProductCAS = function(req, res) {
 
 //var record = [10000001, 'beeUnbranded Plastic Chicken','Abernathy LLC',10,2484,12,'$4300.00','50%','$2150.00',0,'Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http://www.google.com', 'http://www.microsoft.com'], ['http://www.amazon.com', 'http://facebook.com']]]
 var saveProductRecordCAS = function(req, res) {
+  const payload = req.body;
   client.connect(function(err,result){
     var query = 'INSERT INTO amazon.products (product_id, product_title, vendor_name, review_average, review_count, answered_questions, list_price, discount, price, prime, description, photos) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
     client.execute(query,arrayRecord, {prepare: true}, function(err, result){
@@ -111,16 +113,17 @@ var saveProductRecordCAS = function(req, res) {
 //DELETE RECORD FROM TABLE
 
 //SAMPLE QUERY: DELETE from amazon.products where product_id = 9123456;
-var deleteProductRecordCAS = function(productId) {
+var deleteProductRecordCAS = function(req, res) {
+  var id = req.params.productId;
   client.connect(function(err,result){
     var query = 'DELETE from amazon.products where product_id = ?';
-    client.execute(query,[productId], {prepare: true}, function(err, result){
+    client.execute(query,[id], {prepare: true}, function(err, result){
       if(err){
-        console.log("error, ", err)
+        console.log("error, ", err);
+        res.sendStatus(500);
       } else {
-        console.log(result)
-        // console.log(res);
-        // res.send(result.rows[0])
+        console.log(result);
+        res.sendStatus(200);
       }
     });
   }); 
@@ -131,17 +134,21 @@ var deleteProductRecordCAS = function(productId) {
   //  review_count = 123, answered_questions = 12, list_price = '$12.00', discount = '0',  price = '$12.00', prime = 0,
   //  description = 'A really bad game', photos = [['http://www.google.com', 'http://www.microsoft.com'], ['http://www.amazon.com', 'http://facebook.com']] WHERE product_id = 9900000;
 var updateProductRecordCAS = function(req, res) {
-  var newArrayRecord = ['beeUnbranded Plastic Chicken','Abernathy LLC',10,2484,12,'$4300.00','50%','$2150.00',0,'Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http://www.google.com', 'http://www.microsoft.com'], ['http://www.amazon.com', 'http://facebook.com']]]
-  newArrayRecord.unshift(id)
+  const payload = req.body;
+  const productId = req.params.productId;
+  const updatedProductRecord = [payload.product_title, payload.vendor_name, payload.review_average, payload.review_count, payload.answered_questions, payload.list_price, payload.discount, payload.price, payload.prime, payload.description, payload.photos, productId]
+  //var newArrayRecord = ['beeUnbranded Plastic Chicken','Abernathy LLC',10,2484,12,'$4300.00','50%','$2150.00',0,'Voluptatem saepe officia sunt. Est non dolores quia consequuntur accusantium reiciendis eos placeat minima. Minus assumenda et natus minus. Ut numquam unde. Ipsum ut deleniti aut assumenda quam minima alias asperiores ea. Optio sint atque dolore in fugit non asperiores incidunt.', [['http://www.google.com', 'http://www.microsoft.com'], ['http://www.amazon.com', 'http://facebook.com']]]
   client.connect(function(err,result){
     var query = `UPDATE amazon.products SET product_title = ?, vendor_name = ?, review_average = ?,
     review_count = ?, answered_questions = ?, list_price = ?, discount = ?,  price = ?, prime = ?,
     description = ?, photos = ? WHERE product_id = ?`
-    client.execute(query,newArrayRecord, {prepare: true}, function(err, result){
+    client.execute(query,updatedProductRecord, {prepare: true}, function(err, result){
       if(err){
-        console.log("error, ", err)
+        console.log("error, ", err);
+        res.sendStatus(500);
       } else {
-        console.log(result)
+        console.log(result);
+        res.sendStatus(200);
       }
     });
   });   

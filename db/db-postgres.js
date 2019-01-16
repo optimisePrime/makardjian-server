@@ -134,6 +134,7 @@ var createPhotosTablePG = function() {
 
 
 var getProductPG = function(req, res) {
+  console.log("serving")
   var id = req.params.productId;
   var pool = new Pool();
   pool.connect(function(err, client, done) {
@@ -148,9 +149,11 @@ var getProductPG = function(req, res) {
         res.sendStatus(500);
       } else {
         res.send(data.rows[0])
+        client.release(true);
       }
     })
   })
+  pool.end();
 }
 
 

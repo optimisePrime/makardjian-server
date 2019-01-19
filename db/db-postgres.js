@@ -158,10 +158,8 @@ var getProductPG = function(req, res) {
         if (err) {
           console.log('error ')
         } else {
-        //  console.log('sending')
           res.send(data.rows[0]);
           redisClient.set(id, JSON.stringify(data.rows[0]))
-          //res.sendStatus(200);
         }
       }); 
     } else {

@@ -152,9 +152,8 @@ var getProductPG = function(req, res) {
     text: 'SELECT * FROM products left join photos on products.id = photos.product_id WHERE products.id = $1',
     values: [id]
   }
-  if (id < 1000) {
-    redisClient.get(id, function(err, reply) {
-      if (reply === null) {
+  redisClient.get(id, function(err, reply) {
+    if (reply === null) {
       pool.query(query, function(err, data) {
         if (err) {
           console.log('error ')
@@ -165,19 +164,10 @@ var getProductPG = function(req, res) {
           //res.sendStatus(200);
         }
       }); 
-      } else {
-        res.send(JSON.parse(reply));
-      }
-    });
-  } else {
-    pool.query(query, function(err, data) {
-    if (err) {
-      console.log('error ')
     } else {
-      res.send(data.rows[0]);
-    }   
-  })
-}
+      res.send(JSON.parse(reply));
+    }
+  });
 }
 
 

@@ -22,7 +22,7 @@ class App extends React.Component {
   }
   
   getPhotos(id) {
-    axios.get(`http://18.219.217.252:80/photos/${id}`) 
+    axios.get(`http://localhost:3004/photos/${id}`) 
     .then((photos) => {
       this.setState({
         photoSideBar: photos.data
@@ -42,12 +42,14 @@ class App extends React.Component {
   }
 
   getProduct(id) {
-    axios.get(`http://18.219.217.252:80/products/${id}`)
-    .then(data => {
-      const parsedDescription = JSON.parse(data.data[0].description);
+    axios.get(`http://localhost:3004/products/${id}`)
+    .then(results => {
+     // const parsedDescription = JSON.parse(results.data.description);
+     // console.log(parsedDescription)
+     console.log(results.data)
       this.setState({
-        currentProduct: data.data[0],
-        currentDescription: parsedDescription,
+        currentProduct: results.data,
+        currentDescription: [results.data.description]
       });
     });
   };

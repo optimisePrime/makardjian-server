@@ -7,17 +7,7 @@ const cors = require('cors');
 //  ///////////////////////////////////
 // const app = express();
 
-// var bodyParser = require('body-parser')
-
-// app.use(bodyParser.urlencoded({
-//     extended: true
-// }));
-// app.use(bodyParser.json());
-
-
-//app.use('/:productId', express.static(path.join(__dirname, './../client/dist/')));
-//app.use(express.static(path.join(__dirname, './../client/dist/')));
-// app.use(cors());
+var bodyParser = require('body-parser')
 
 
 // const PORT = 3004;
@@ -44,12 +34,27 @@ if (cluster.isMaster) {
         cluster.fork();
     });
 } else {
-    var app = require('express')();
+  
+  var app = require('express')();
+
+  app.use(bodyParser.urlencoded({
+      extended: true
+  }));
+  app.use(bodyParser.json());
+
+
+  app.use('/:productId', express.static(path.join(__dirname, './../client/dist/')));
+  app.use(express.static(path.join(__dirname, './../client/dist/')));
+  app.use(cors());
+
 	app.get('/products/:productId', function (req, res) {
 		db.getProductPG(req, res);
 		//res.sendStatus(200);
 	});
-  
+
+  app.get('/photos/:productId', function(req, res) {
+    db.getPhotosPG(req, res);
+  });
 
     var server = app.listen(3004, function() {
         console.log('Process ' + process.pid + ' is listening to all incoming requests');
@@ -72,7 +77,7 @@ if (cluster.isMaster) {
 // });
 
 // app.post('/photos/:productId', db.saveProductRecordPG)
-// app.get('/photos/:productId', db.getProductPG)
+
 // app.put('/photos/:productId', db.updateProductRecordPG)
 // app.delete('/photos/:productId', db.deleteProductRecordPG)
 

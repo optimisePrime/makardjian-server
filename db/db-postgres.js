@@ -149,7 +149,7 @@ var getProductPG = function(req, res) {
   var id = req.params.productId;
   const query = {
     name: 'fetch-product',
-    text: 'SELECT * FROM products left join photos on products.id = photos.product_id WHERE products.id = $1',
+    text: 'SELECT * FROM products WHERE id = $1',
     values: [id]
   }
   redisClient.get(id, function(err, reply) {
@@ -169,28 +169,28 @@ var getProductPG = function(req, res) {
 }
 
 
-var getPhotosPG = function(productId) {
-  var pool = new Pool();
-  pool.connect(function(err, client, done) {
-    if (err) {
-      console.log(err);
-    } else {
-      const query = {
-        name: 'fetch-photos',
-        text: 'SELECT * FROM photos WHERE product_id = $1',
-        values: [product_id]
-      }
-      client.query(query, (err, data) => {
+var getPhotosPG = function(req, res) {
+  var id = req.params.productId;
+  let record = '' + id + 'p';
+  const query = {
+    name: 'fetch-photos',
+    text: 'SELECT * FROM photos WHERE product_id = $1',
+    values: [id]
+  }
+  redisClient.get(record, function(err, reply) {
+    if (reply === null) {
+      pool.query(query, function(err, data) {
         if (err) {
-          console.log("err", err.stack);
-          res.sendStatus(500);
+          console.log('error ')
         } else {
-          console.log(data.rows[0])
-          res.send(data.rows[0])
+          res.send(data.rows);
+          redisClient.set(record, JSON.stringify(data.rows))
         }
-      })
+      }); 
+    } else {
+      res.send(JSON.parse(reply));
     }
-  })  
+  });
 }
 
 //CREATE RECORDS FOR TABLES
@@ -320,7 +320,8 @@ module.exports = {
   deleteProductRecordPG,
   updateProductRecordPG,
   getProductPG,
-  saveProductRecordPG
+  saveProductRecordPG,
+  getPhotosPG
 }
 
 

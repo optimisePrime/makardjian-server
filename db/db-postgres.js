@@ -188,6 +188,7 @@ var getPhotosPG = function(req, res) {
         }
       }); 
     } else {
+      console.log("reading from cache")
       res.send(JSON.parse(reply));
     }
   });

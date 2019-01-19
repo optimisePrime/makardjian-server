@@ -8,6 +8,8 @@ const cors = require('cors');
 // const app = express();
 
 var bodyParser = require('body-parser')
+var morgan = require('morgan')
+
 
 
 // const PORT = 3004;
@@ -36,6 +38,7 @@ if (cluster.isMaster) {
 } else {
   
   var app = require('express')();
+  app.use(morgan('dev'));
 
   app.use(bodyParser.urlencoded({
       extended: true

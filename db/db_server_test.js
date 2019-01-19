@@ -21,4 +21,4 @@ const ReadDB = async (dbName, port) => {
 // // Log READ averages for both dbs and log the results
 
 ReadDB('Postgres', 3004);
-ReadDB('Cassandra', 3005);
+//ReadDB('Cassandra', 3005);

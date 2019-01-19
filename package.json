@@ -30,6 +30,7 @@
     "fs": "0.0.1-security",
     "mini-css-extract-plugin": "^0.5.0",
     "mysql": "^2.16.0",
+    "newrelic": "^5.0.0",
     "node-sass": "^4.11.0",
     "performance": "^1.1.1",
     "performance-now": "^2.1.0",
@@ -37,6 +38,7 @@
     "pg-copy-streams": "^1.2.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "redis": "^2.8.0",
     "sass-loader": "^7.1.0",
     "underscore": "^1.9.1",
     "uuid": "^3.3.2"

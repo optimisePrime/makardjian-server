@@ -1,0 +1,17 @@
+config:
+  target: "http://localhost:3005"
+  http:
+    # pool: 50
+  phases:
+    - duration: 1
+      arrivalRate: 25000
+scenarios:
+  - flow:
+      - get:
+          # add the url you need to send get request
+          url: "/products/1"
+      #     capture:
+      #     # capturing responce using reg expression
+      #       - regexp: "[^]*"
+      #         as: "response"
+      # - log: ""

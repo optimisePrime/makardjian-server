@@ -36,6 +36,7 @@ const cassandra = require('cassandra-driver');
 
 var client = new cassandra.Client({contactPoints : ['127.0.0.1'], localDataCenter: 'datacenter1', keyspace: 'students_details' });
 
+
 //CREATE KEYSPACE AND TABLE
 
 var createDbCAS = function() {
@@ -75,18 +76,15 @@ var createDbCAS = function() {
 
 var getProductCAS = function(req, res) {
   var id = req.params.productId;
-  client.connect(function(err,result){
-    var query = 'SELECT * FROM amazon.products WHERE product_id = ?';
-    client.execute(query,[id], {prepare: true}, function(err, data){
+  var query = 'SELECT * FROM amazon.products WHERE product_id = ?';
+  client.execute(query,[id], {prepare: true}, function(err, data){
       if(err){
-        console.log("error, ", err)
+        console.log(err);
         res.sendStatus(500);
       } else {
-        console.log(data.rows[0])
         res.send(data.rows[0])
       }
     });
-  });
 }
 
 

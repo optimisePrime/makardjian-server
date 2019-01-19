@@ -27,6 +27,13 @@ const getPhotos = (req, res) => {
 };
 
 
+/////////////REDIS
+var redis = require("redis"),
+    redisClient = redis.createClient();
+ 
+redisClient.on("error", function (err) {
+    console.log("Error " + err);
+});
 
 /////////////POSTGRES
 
@@ -133,27 +140,44 @@ var createPhotosTablePG = function() {
 //READ TABLES
 
 
+var pool = new Pool({max: 1000});
+// pool.on('connect', () => {
+//   console.log('connected to the db');
+// });
+
 var getProductPG = function(req, res) {
-  console.log("serving")
   var id = req.params.productId;
-  var pool = new Pool();
-  pool.connect(function(err, client, done) {
-    const query = {
-      name: 'fetch-product',
-      text: 'SELECT * FROM products WHERE id = $1',
-      values: [id]
-    }
-    client.query(query, (err, data) => {
-      if (err) {
-        console.log("Error running query:", err.stack);
-        res.sendStatus(500);
+  const query = {
+    name: 'fetch-product',
+    text: 'SELECT * FROM products left join photos on products.id = photos.product_id WHERE products.id = $1',
+    values: [id]
+  }
+  if (id < 1000) {
+    redisClient.get(id, function(err, reply) {
+      if (reply === null) {
+      pool.query(query, function(err, data) {
+        if (err) {
+          console.log('error ')
+        } else {
+        //  console.log('sending')
+          res.send(data.rows[0]);
+          redisClient.set(id, JSON.stringify(data.rows[0]))
+          //res.sendStatus(200);
+        }
+      }); 
       } else {
-        res.send(data.rows[0])
-        client.release(true);
+        res.send(JSON.parse(reply));
       }
-    })
+    });
+  } else {
+    pool.query(query, function(err, data) {
+    if (err) {
+      console.log('error ')
+    } else {
+      res.send(data.rows[0]);
+    }   
   })
-  pool.end();
+}
 }
 
 

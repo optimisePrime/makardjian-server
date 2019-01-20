@@ -1,4 +1,4 @@
-require('newrelic');
+//require('newrelic');
 const express = require('express');
 const path = require('path');
 const db = require('./../db/db-postgres.js');
@@ -11,9 +11,8 @@ var bodyParser = require('body-parser')
 var morgan = require('morgan')
 
 
-
-// const PORT = 3004;
-// app.listen(PORT);
+//var app = express();
+ //const PORT = 3004;
 
 var cluster = require('cluster');
 
@@ -51,7 +50,8 @@ if (cluster.isMaster) {
   app.use(cors());
 
 	app.get('/products/:productId', function (req, res) {
-		db.getProductPG(req, res);
+		console.log('serving a get request');
+                db.getProductPG(req, res);
 		//res.sendStatus(200);
 	});
 
@@ -59,7 +59,7 @@ if (cluster.isMaster) {
     db.getPhotosPG(req, res);
   });
 
-    var server = app.listen(3004, function() {
+    var server = app.listen(9000, function() {
         console.log('Process ' + process.pid + ' is listening to all incoming requests');
     });
 }

@@ -47,7 +47,10 @@ var clearFile = function() {
 var writeToDb = function(input) {
     console.log("Currently on loop #", input)
     if (input < 100) {
-      var pool = new Pool()
+      var pool = new Pool({
+user: 'ec2-user',
+password: 'password'
+})
       pool.connect(function(err, client, done) {
         if (err) {
           console.log('err connecting', err)

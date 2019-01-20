@@ -97,12 +97,12 @@ var writeToDbPG = function(input) {
         } else {
           var stream = client.query(copyFrom('COPY photos (main_url, zoom_url, product_id, main_photo) FROM STDIN CSV'));
           console.log('in stream')
-          var fileStream = fs.createReadStream('photos1.csv');
+          var fileStream = fs.createReadStream('photos_pg.csv');
           fileStream.on('error', (error) => console.log("Error reading file", error));
           stream.on('error', (error) => console.log("Error in copy command", error));
           stream.on('end', () => {
               client.release(true);
-              writeToDbPG(input + 1);
+              //writeToDbPG(input + 1);
             })
           fileStream.pipe(stream)
       }
@@ -113,7 +113,7 @@ var writeToDbPG = function(input) {
 
 
 
-// writeToDbPG(0);
+//writeToDbPG(0);
 
 // module.exports = {
 //   products
@@ -163,7 +163,7 @@ var clearFile = function() {
   console.log('Done clearing file')
 }
 
-clearFile();
+
 
 
 const printer = function () {
@@ -182,7 +182,7 @@ const printer = function () {
     }
   };
 
-  let i = 9000000;
+  let i = 9750001;
 
   const MAX_LIM = 10000000;
 
@@ -198,9 +198,10 @@ const printer = function () {
   return writer;
 }
 
-const printty = printer();
-printty();
-
+//const printty = printer();
+//clearFile();
+//printty();
+writeToDbPG(0);
 
 
 

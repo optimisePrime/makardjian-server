@@ -1,4 +1,4 @@
-require('newrelic');
+//require('newrelic');
 const express = require('express');
 const path = require('path');
 const db = require('./../db/db-postgres.js');
@@ -37,12 +37,16 @@ if (cluster.isMaster) {
 } else {
   
   var app = require('express')();
-  app.use(morgan('dev'));
+ // app.use(morgan('dev'));
 
   app.use(bodyParser.urlencoded({
       extended: true
   }));
   app.use(bodyParser.json());
+
+  app.get('/loaderio-0dbdf036e2d021702ad5610af29ac278', function (req, res) {
+          res.send('loaderio-0dbdf036e2d021702ad5610af29ac278');
+        })
 
 
   app.use('/:productId', express.static(path.join(__dirname, './../client/dist/')));
@@ -50,7 +54,7 @@ if (cluster.isMaster) {
   app.use(cors());
 
 	app.get('/products/:productId', function (req, res) {
-		console.log('serving a get request');
+		//console.log('serving a get request');
                 db.getProductPG(req, res);
 		//res.sendStatus(200);
 	});

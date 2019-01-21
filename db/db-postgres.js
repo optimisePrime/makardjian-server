@@ -159,7 +159,8 @@ var getProductPG = function(req, res) {
           console.log('error ')
         } else {
           res.send(data.rows[0]);
-          redisClient.set(id, JSON.stringify(data.rows[0]))
+          redisClient.set(id, JSON.stringify(data.rows[0]), function(err, reply) {
+            console.log(err)})
         }
       }); 
     } else {
@@ -184,7 +185,9 @@ var getPhotosPG = function(req, res) {
           console.log('error ')
         } else {
           res.send(data.rows);
-          redisClient.set(record, JSON.stringify(data.rows))
+          redisClient.set(record, JSON.stringify(data.rows), function(err, reply) {
+            console.log(err) 
+          })
         }
       }); 
     } else {
